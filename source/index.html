@@ -13,11 +13,10 @@
 	<body>
 		<script>
 			var camera, scene, renderer;
-
 			var particles_fire;
-			const NUM_FIRE = 1500;
+			const NUM_FIRE = 1000;
 			const DELTA_Y_FIRE = 5;
-			const RANGE_PX_FIRE = 3;
+			const RANGE_PX_FIRE = 2.5;
 			const RANGE_PY_FIRE = 1.5;
 			const RANGE_VX_FIRE = 0.05;
 			const RANGE_VY_FIRE = 0.1;
@@ -25,32 +24,26 @@
 			const RANGE_DEGREE = Math.PI / 180 * 360;
 			const DELTA_FRAME = 0.005;
 			const RANGE_FRAME = 0.005;
-
 			init();
 			animate();
-
 			function init(){
 				var width = window.innerWidth;
 				var height = window.innerHeight;
-
 				camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000);
 				camera.position.z = 25;
-
 				renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
 				renderer.setPixelRatio(window.devicePixelRatio);
 				renderer.setSize(window.innerWidth, window.innerHeight);
 				renderer.autoClear = false;
 				document.body.appendChild(renderer.domElement);
-
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color(0x0);
-
 				particles_fire = new Array();
 				var particle, geometry, meterial;
 				for(var i = 0; i < NUM_FIRE; ++i){
 					particles_fire[i] = {
 						mesh: null,
-						c: 0xaaaaff,
+						c: 0x3fffff,
 						t: 1.0, 
 						r: DELTA_FRAME + Math.random() * RANGE_FRAME,
 						p: [(Math.random() * RANGE_PX_FIRE) * Math.cos(Math.random() * RANGE_DEGREE), (Math.random() * RANGE_PY_FIRE) * Math.sin(Math.random() * RANGE_DEGREE) - DELTA_Y_FIRE, 0], 
@@ -60,21 +53,18 @@
 					particle = particles_fire[i];
 					geometry = new THREE.PlaneGeometry(3, 5);
 					material = new THREE.MeshBasicMaterial({
-						color: 0xaaaaff,
+						color: 0x3fffff,
 						map: new THREE.TextureLoader().load("https://raw.githubusercontent.com/jaejunha/PersonalPage/master/source/resource/fire.png"),
 						transparent: true,
 						depthWrite: false,
 						opacity: particle.t,
 						blending: THREE.AdditiveBlending
 					});
-
 					particle.mesh = new THREE.Mesh(geometry, material);
 					scene.add(particle.mesh);
-
 					particle.mesh.position.set(particle.p[0], particle.p[1], particle.p[2]);
 				}
 			}
-
 			function animate() {
 				requestAnimationFrame(animate);
 				renderer.clear();
@@ -85,12 +75,12 @@
 					particle.t -= particle.r;
 					if(particle.t < 0) {
 						particle.t = 1.0;
-						particle.c = 0xaaaaff;
+						particle.c = 0x3fffff;
 						particle.r = DELTA_FRAME + Math.random() * RANGE_FRAME;
 						particle.p = [(Math.random() * RANGE_PX_FIRE) * Math.cos(Math.random() * RANGE_DEGREE), (Math.random() * RANGE_PY_FIRE) * Math.sin(Math.random() * RANGE_DEGREE) - DELTA_Y_FIRE, 0]; 
 						particle.v = [(Math.random() * RANGE_VX_FIRE) * Math.cos(Math.random() * RANGE_DEGREE), (Math.random() * RANGE_VY_FIRE) * Math.sin(Math.random() * RANGE_DEGREE), 0]; 
 					} else {	
-						particle.c = ((170 - 170 * (1 - particle.t)) << 16) + ((170 - 170 * (1 - particle.t)) << 8) + 255;
+						particle.c = 0x3fffff;
 						particle.p = [particle.p[0] + particle.v[0] * (1 - particle.t), particle.p[1] + particle.v[1] * (1 - particle.t), 0]
 						particle.v[1] = particle.v[1] + particle.a[1];
 					}
@@ -98,7 +88,6 @@
 					particle.mesh.material.color.setHex(particle.c);
 					particle.mesh.position.set(particle.p[0], particle.p[1], particle.p[2]);
 				}
-
 				renderer.render(scene, camera);
 			}
 		</script>
