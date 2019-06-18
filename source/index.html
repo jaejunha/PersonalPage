@@ -116,7 +116,8 @@
 					});
 			
 					mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials));
-					mesh.position.set(6, 12, -7);
+					mesh.position.set(9, 12, -10);
+					mesh.scale.set(1.5, 1.5, 1.5);
 					mesh.rotation.x = 0.1 * Math.PI;
 					mixer = new THREE.AnimationMixer(mesh);
 					var actions = new Array(geometry.animations.length);
