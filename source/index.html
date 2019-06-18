@@ -56,8 +56,7 @@
 				document.body.appendChild(renderer.domElement);
 
 				scene = new THREE.Scene();
-				scene.background = new THREE.Color(0x0);
-
+				scene.background = new THREE.Color(0x000000);
 
 				geometry = new THREE.PlaneGeometry(60,60,60,60);
 				material = new THREE.MeshPhongMaterial({color: 0xcccccc});
@@ -112,13 +111,13 @@
 				new THREE.JSONLoader().load("resource/personal/bird.json", function (geometry, materials) {
 					materials.forEach(function (material) { 
 						material.color = {b: 0.2, g: 0.2, r: 0.2};
-						material.specular = {b: 0.1, g: 0.1, r: 0.1};
-						material.skinning = true; 
+						material.specular = {b: 0.5, g: 0.5, r: 0.5};
+						material.skinning = true;
 					});
 			
 					mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials));
-					mesh.position.set(6, 12, 1.5);
-					mesh.rotation.x = 0.05 * Math.PI;
+					mesh.position.set(6, 12, -7);
+					mesh.rotation.x = 0.1 * Math.PI;
 					mixer = new THREE.AnimationMixer(mesh);
 					var actions = new Array(geometry.animations.length);
 					for(var i = 0; i < actions.length; i++){
