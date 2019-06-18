@@ -2,9 +2,7 @@
 	<head>
 		<link rel="icon" type="image/x-icon" class="js-site-favicon" href="resource/personal/favicon.ico">
 		<title>Dreamline91's homepage</title>
-		<script type="text/javascript" src="resource/external/three.js"></script>
-		<script type="text/javascript" src="resource/external/LoaderSupport.js"></script>
-		<script type="text/javascript" src="resource/external/OBJLoader2.js"></script>
+		<script type="text/javascript" src="resource/external/three.min.js"></script>
 		<style>
 			html, body { 
 				margin: 0;
@@ -31,6 +29,8 @@
 			const RANGE_DEGREE = Math.PI / 180 * 360;
 			const DELTA_FRAME = 0.005;
 			const RANGE_FRAME = 0.005;
+
+			var clock, mixer;
 
 			init();
 			animate();
@@ -81,7 +81,7 @@
 					geometry = new THREE.PlaneGeometry(3, 5);
 					material = new THREE.MeshPhongMaterial({
 						color: 0x3fffff,
-						map: new THREE.TextureLoader().load("https://raw.githubusercontent.com/jaejunha/PersonalPage/master/source/resource/fire.png"),
+						map: new THREE.TextureLoader().load("resource/fire.png"),
 						transparent: true,
 						depthWrite: false,
 						opacity: particle.t,
@@ -94,26 +94,54 @@
 					particle.mesh.position.set(particle.p[0], particle.p[1], particle.p[2]);
 				}
 
-
-
-				loader = new THREE.OBJLoader2();
-				loader.load('https://raw.githubusercontent.com/jaejunha/PersonalPage/master/source/resource/dreamline91.obj', (event) => {
-					mesh = event.detail.loaderRootNode;
-					mesh.children[0].material[0].emissive = {b: 0.5, g: 0.5, r: 0.5}
-					mesh.position.set(0, 3, 0); 
+				new THREE.JSONLoader().load("resource/dreamline91.json", function (geometry, materials) {
+					material = new THREE.MeshPhongMaterial({
+						transparent: true
+					});
+					material.emissive = {b: 0.5, g: 0.5, r: 0.5};
+					mesh = new THREE.Mesh(geometry, material);
+					mesh.position.set(0, 1.4, -2.5);
 					mesh.rotation.y = -0.5 * Math.PI;
-					mesh.scale.set(2,2,2);
+					mesh.scale.set(2, 2, 2);
 					mesh.castShadow = true;
 					scene.add(mesh);
 				});
 
+
+				clock = new THREE.Clock();
+				new THREE.JSONLoader().load("resource/personal/bird.json", function (geometry, materials) {
+					materials.forEach(function (material) { 
+						material.color = {b: 0.2, g: 0.2, r: 0.2};
+						material.specular = {b: 0.1, g: 0.1, r: 0.1};
+						material.skinning = true; 
+					});
+			
+					mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials));
+					mesh.position.set(6, 12, 1.5);
+					mesh.rotation.x = 0.05 * Math.PI;
+					mixer = new THREE.AnimationMixer(mesh);
+					var actions = new Array(geometry.animations.length);
+					for(var i = 0; i < actions.length; i++){
+						actions[i] = mixer.clipAction(geometry.animations[i]);
+						actions[i].setEffectiveWeight(1);
+						actions[i].enabled = true;
+					}
+					scene.add(mesh);
+				 	actions[2].play();
+				});
+
+
 				var light = new THREE.SpotLight(0xffffff);
 				light.position.set(0, 15, 20);  
 				light.castShadow = true;
+				light.shadow.mapSize.width = 5120;
+				light.shadow.mapSize.height = 5120;
 				scene.add(light);  
 			}
 
 			function animate() {
+
+
 				requestAnimationFrame(animate);
 				renderer.clear();
 				
@@ -137,13 +165,13 @@
 					particle.mesh.material.color.setHex(particle.c);
 					particle.mesh.position.set(particle.p[0], particle.p[1], particle.p[2]);
 				}
+				
+				if(mixer)
+					mixer.update(clock.getDelta());
+
+
 				renderer.render(scene, camera);
 			}
-
-
-		
-
-
 		</script>
 	</body>
 </html>
