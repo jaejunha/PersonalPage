@@ -15,22 +15,35 @@
 			var camera, scene, renderer;
 
 			var geometry, material, mesh, loader, texture;
+			const DELTA_Y_CAMERA = 15;
+			const DELTA_Z_CAMERA = 30;
 
 			var particles_fire;
 			var particle;
 			const NUM_FIRE = 1500;
 			const DELTA_Y_FIRE = 5;
-			const DELTA_Z_FIRE = -2;
+			const DELTA_Z_FIRE = -5;
 			const RANGE_PX_FIRE = 2.5;
 			const RANGE_PY_FIRE = 1.5;
 			const RANGE_VX_FIRE = 0.05;
 			const RANGE_VY_FIRE = 0.10;
 			const RANGE_AY_FIRE = 0.002;
 			const RANGE_DEGREE = Math.PI / 180 * 360;
-			const DELTA_FRAME = 0.005;
-			const RANGE_FRAME = 0.005;
+			const DELTA_RATE_FIRE = 0.005;
+			const RANGE_RATE_FIRE = 0.005;
+			const COLOR_FIRE = 0x3fffff;
+			const COLOR_R_FIRE = 63;
+			const COLOR_G_FIRE = 255;
+			const COLOR_B_FIRE = 255;
 
-			var clock, bird, mixer, actions, index = 0;
+			var clock, soul, mixer, actions, frame = 0;
+			const DELTA_START_SOUL = 50;
+			const DELTA_END_SOUL = 230;
+			const DELTA_Z_SOUL = -1.5;
+
+			const DELTA_Y_LIGHT = 12;
+			const DELTA_Z_LIGHT = 16;
+			const RESOLUTION_SHADOW = 5120;
 
 			init();
 			animate();
@@ -40,9 +53,9 @@
 				var height = window.innerHeight;
 
 				camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000);
-				camera.position.y = 15;
-				camera.position.z = 30;
-				camera.up.set(0, 30, 15);
+				camera.position.y = DELTA_Y_CAMERA;
+				camera.position.z = DELTA_Z_CAMERA;
+				camera.up.set(0, DELTA_Z_CAMERA, DELTA_Y_CAMERA);
 
 				renderer = new THREE.WebGLRenderer({
 					antialias: true, 
@@ -70,16 +83,16 @@
 				for(var i = 0; i < NUM_FIRE; ++i){
 					particles_fire[i] = {
 						mesh: null,
-						c: 0x3fffff,
+						c: COLOR_FIRE,
 						t: 1.0, 
-						r: DELTA_FRAME + Math.random() * RANGE_FRAME,
+						r: DELTA_RATE_FIRE + Math.random() * RANGE_RATE_FIRE,
 						p: [(Math.random() * RANGE_PX_FIRE) * Math.cos(Math.random() * RANGE_DEGREE), (Math.random() * RANGE_PY_FIRE) * Math.sin(Math.random() * RANGE_DEGREE) + DELTA_Y_FIRE, DELTA_Z_FIRE], 
 						v: [(Math.random() * RANGE_VX_FIRE) * Math.cos(Math.random() * RANGE_DEGREE), (Math.random() * RANGE_VY_FIRE) * Math.sin(Math.random() * RANGE_DEGREE), 0], 
 						a: [0, RANGE_AY_FIRE, 0]
 					};
 					particle = particles_fire[i];
 					material = new THREE.MeshBasicMaterial({
-						color: 0x3fffff,
+						color: COLOR_FIRE,
 						map: texture,
 						transparent: true,
 						depthWrite: false,
@@ -106,8 +119,20 @@
 					scene.add(mesh);
 				});
 
-				clock = new THREE.Clock();
 				new THREE.JSONLoader().load("resource/personal/bird.json", function (geometry, materials) {
+					material = new THREE.MeshPhongMaterial({
+						specular: {b: 0.05, g: 0.05, r: 0.05}
+					});
+
+					mesh = new THREE.Mesh(geometry, material);
+					mesh.position.set(0, 1, -8);
+					mesh.scale.set(1.25, 1.25, 1.25);
+					mesh.castShadow = true;
+					scene.add(mesh);
+				});
+
+				clock = new THREE.Clock();
+				new THREE.JSONLoader().load("resource/personal/soul.json", function (geometry, materials) {
 					materials.forEach(function (material) { 
 						material.specular = {b: 0.05, g: 0.05, r: 0.05};
 						material.skinning = true;
@@ -115,6 +140,7 @@
 						material.transparent = true;
 						material.color = {b: 1, g: 1, r: 1};
 						material.side = THREE.FrontSide;
+
 						material.blending = THREE.CustomBlending;
 						material.blendEquation = THREE.AddEquation;
 						material.blendSrc = THREE.OneFactor;
@@ -125,60 +151,61 @@
 					materials[2].specular = {b: 1, g: 1, r: 1};
 					materials[3].specular = {b: 0, g: 0, r: 0};
 
-					bird = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials));
-					bird.position.set(0, 9, 1.5);
-					bird.scale.set(0.01, 0.01, 0.01);
-					bird.rotation.x = 0.05 * Math.PI;
-					mixer = new THREE.AnimationMixer(bird);
+					soul = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials));
+					soul.position.set(0, 0, DELTA_Z_SOUL);
+					soul.scale.set(0.01, 0.01, 0.01);
+					mixer = new THREE.AnimationMixer(soul);
 					actions = new Array(geometry.animations.length);
 					for(var i = 0; i < actions.length; i++){
 						actions[i] = mixer.clipAction(geometry.animations[i]);
 						actions[i].setEffectiveWeight(1);
 						actions[i].enabled = true;
 					}
-					scene.add(bird);
+					scene.add(soul);
 				});
 
 
 				var light = new THREE.SpotLight(0xffffff);
-				light.position.set(0, 12, 16);  
+				light.position.set(0, DELTA_Y_LIGHT, DELTA_Z_LIGHT);  
 				light.castShadow = true;
-				light.shadow.mapSize.width = 5120;
-				light.shadow.mapSize.height = 5120;
+				light.shadow.mapSize.width = RESOLUTION_SHADOW;
+				light.shadow.mapSize.height = RESOLUTION_SHADOW;
 				scene.add(light);  
 			}
 
+			var time = 0;
 			function animate() {
-
 
 				requestAnimationFrame(animate);
 				renderer.clear();
-				
+				frame++;
+				if (frame <= DELTA_END_SOUL) {
+					if (frame > DELTA_START_SOUL && frame < DELTA_END_SOUL){
+						time = (frame - DELTA_START_SOUL - 0.0) / (DELTA_START_SOUL - DELTA_END_SOUL);
+						time = time * time * time * time;
+						soul.rotation.x = 0.05 * time * Math.PI;
+						soul.scale.set(1.25 * time, 1.25 * time, 1.25 * time);
+						soul.position.set(0, 4 * time + 5, DELTA_Z_SOUL);
+					} else if (frame == DELTA_END_SOUL) {
+						actions[2].play();
+						soul.rotation.x = 0.05 * Math.PI;
+						soul.scale.set(1.25, 1.25, 1.25);
+						soul.position.set(7.5, 9, DELTA_Z_SOUL);
+					}
+				}		
+		
 				for(var i = 0; i < NUM_FIRE; ++i){
 					particle = particles_fire[i];
 	
 					particle.t -= particle.r;
 					if(particle.t < 0) {
 						particle.t = 1.0;
-						particle.c = 0x3fffff;
-						particle.r = DELTA_FRAME + Math.random() * RANGE_FRAME;
+						particle.c = COLOR_FIRE;
+						particle.r = DELTA_RATE_FIRE + Math.random() * RANGE_RATE_FIRE;
 						particle.p = [(Math.random() * RANGE_PX_FIRE) * Math.cos(Math.random() * RANGE_DEGREE), (Math.random() * RANGE_PY_FIRE) * Math.sin(Math.random() * RANGE_DEGREE) + DELTA_Y_FIRE, DELTA_Z_FIRE]; 
 						particle.v = [(Math.random() * RANGE_VX_FIRE) * Math.cos(Math.random() * RANGE_DEGREE), (Math.random() * RANGE_VY_FIRE) * Math.sin(Math.random() * RANGE_DEGREE), 0]; 
-
-						if(index == 0){
-							bird.scale.set(1.25, 1.25, 1.25);
-							var from = actions[index].play();
-							index = 2;
-							setTimeout(function() {
-								bird.position.set(7.5, 9, 1.5);
-								var to = actions[index].play();	
-								from.enabled = true;
-								to.enabled = true;
-								from.crossFadeTo(to, 0);
-							}, 2500);
-						}
 					} else {	
-						particle.c = ((63 - 63 * (1 - particle.t)) << 16) + ((255 - 255 * (1 - particle.t)) << 8) + (255 - 255 * (1 - particle.t))
+						particle.c = ((COLOR_R_FIRE - COLOR_R_FIRE * (1 - particle.t)) << 16) + ((COLOR_G_FIRE - COLOR_G_FIRE * (1 - particle.t)) << 8) + (COLOR_B_FIRE - COLOR_B_FIRE * (1 - particle.t))
 						particle.p = [particle.p[0] + particle.v[0] * (1 - particle.t), particle.p[1] + particle.v[1] * (1 - particle.t), DELTA_Z_FIRE]
 						particle.v[1] = particle.v[1] + particle.a[1];
 					}
