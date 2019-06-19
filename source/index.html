@@ -14,7 +14,7 @@
 		<script>
 			var camera, scene, renderer;
 
-			var geometry, material, mesh, loader;
+			var geometry, material, mesh, loader, texture;
 
 			var particles_fire;
 			var particle;
@@ -66,6 +66,7 @@
 				scene.add(mesh);
 
 				particles_fire = new Array();
+				texture = new THREE.TextureLoader().load("resource/fire.png");
 				for(var i = 0; i < NUM_FIRE; ++i){
 					particles_fire[i] = {
 						mesh: null,
@@ -77,18 +78,17 @@
 						a: [0, RANGE_AY_FIRE, 0]
 					};
 					particle = particles_fire[i];
-					geometry = new THREE.PlaneGeometry(3, 5);
-					material = new THREE.MeshPhongMaterial({
+					material = new THREE.MeshBasicMaterial({
 						color: 0x3fffff,
-						map: new THREE.TextureLoader().load("resource/fire.png"),
+						map: texture,
 						transparent: true,
 						depthWrite: false,
 						opacity: particle.t,
 						blending: THREE.AdditiveBlending
 					});
+
+					geometry = new THREE.PlaneGeometry(3, 5);
 					particle.mesh = new THREE.Mesh(geometry, material);
-					particle.mesh.castShadow = true;
-					particle.mesh.receiveShadow = true;
 					scene.add(particle.mesh);
 					particle.mesh.position.set(particle.p[0], particle.p[1], particle.p[2]);
 				}
