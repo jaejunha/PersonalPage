@@ -2,7 +2,7 @@
 under construction  
 ---  
 
-<img src="https://github.com/jaejunha/PersonalPage/blob/master/preview/ing.gif?raw=true">   
+<img src="preview/ing.gif?raw=true">   
 
 ---
 # Reference  
