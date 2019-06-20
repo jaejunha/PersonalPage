@@ -41,6 +41,7 @@
 			const DELTA_END_SOUL = 230;
 			const DELTA_Z_SOUL = -1.5;
 
+			var light;
 			const DELTA_Y_LIGHT = 12;
 			const DELTA_Z_LIGHT = 16;
 			const RESOLUTION_SHADOW = 5120;
@@ -72,10 +73,28 @@
 				scene.background = new THREE.Color(0x000000);
 
 				geometry = new THREE.PlaneGeometry(60, 60, 1, 1);
-				material = new THREE.MeshPhongMaterial({color: 0xcccccc});
+				material = new THREE.MeshPhongMaterial({
+					color: 0xd86700,
+					side: THREE.DoubleSide,
+					normalMap: new THREE.TextureLoader().load( "resource/external/grass_normal.jpg" ),
+					normalScale: new THREE.Vector2(0.1, 0.1)
+				});
+				material.normalMap.minFilter = THREE.LinearFilter;
 				mesh = new THREE.Mesh(geometry, material);
 				mesh.rotation.x = -0.5 * Math.PI;
 				mesh.receiveShadow = true;
+				scene.add(mesh);
+
+				geometry = new THREE.PlaneGeometry(30, 30, 1, 1);
+				material = new THREE.MeshBasicMaterial({
+					map: new THREE.TextureLoader().load( "resource/external/blood.png"),
+					opacity: 0.8,
+					transparent: true
+				});
+				material.map.minFilter = THREE.LinearFilter;
+				mesh = new THREE.Mesh(geometry, material);
+				mesh.rotation.x = -0.5 * Math.PI;
+				mesh.position.set(5, 0.1, -10);
 				scene.add(mesh);
 
 				particles_fire = new Array();
@@ -164,13 +183,12 @@
 					scene.add(soul);
 				});
 
-
-				var light = new THREE.SpotLight(0xffffff);
+				light = new THREE.SpotLight(0xffffff);
 				light.position.set(0, DELTA_Y_LIGHT, DELTA_Z_LIGHT);  
 				light.castShadow = true;
 				light.shadow.mapSize.width = RESOLUTION_SHADOW;
 				light.shadow.mapSize.height = RESOLUTION_SHADOW;
-				scene.add(light);  
+				scene.add(light);
 			}
 
 			var time = 0;
