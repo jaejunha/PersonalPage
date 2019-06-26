@@ -48,7 +48,8 @@
 			const DELTA_Z_LIGHT1 = 16;
 			const DELTA_Y_LIGHT2 = 20;
 			const DELTA_Z_LIGHT2 = 4;
-			const DISTANCE_LIGHT = 40;
+			const DISTANCE_LIGHT1 = 35;
+			const DISTANCE_LIGHT2 = 30;
 			const RESOLUTION_SHADOW = 5120;
 
 			init();
@@ -83,13 +84,12 @@
 				cube = new THREE.CubeTextureLoader().load(path);
 */
 				scene = new THREE.Scene();
-				scene.background = new THREE.Color(0x000000);
+				scene.background = new THREE.TextureLoader().load( "resource/personal/background.jpg");
+				
 
-				geometry = new THREE.PlaneGeometry(120, 60, 1, 1);
+				geometry = new THREE.PlaneGeometry(60, 60, 1, 1);
 				material = new THREE.MeshPhongMaterial({
-					color: 0xffffff,
-					
-  side: THREE.DoubleSide,
+					color: 0xffffff
 				});		
 				mesh = new THREE.Mesh(geometry, material);
 				mesh.rotation.x = -0.5 * Math.PI;
@@ -202,12 +202,12 @@
 				light.castShadow = true;
 				light.shadow.mapSize.width = RESOLUTION_SHADOW;
 				light.shadow.mapSize.height = RESOLUTION_SHADOW;
-				light.distance = DISTANCE_LIGHT;
+				light.distance = DISTANCE_LIGHT1;
 				scene.add(light);
 
 				light = new THREE.SpotLight(0xffffff);
 				light.position.set(0, DELTA_Y_LIGHT2, DELTA_Z_LIGHT2);  
-				light.distance = DISTANCE_LIGHT;
+				light.distance = DISTANCE_LIGHT2;
 				scene.add(light);
 			}
 
