@@ -28,8 +28,8 @@
 			const RANGE_PX_FIRE = 2.5;
 			const RANGE_PY_FIRE = 1.5;
 			const RANGE_VX_FIRE = 0.05;
-			const RANGE_VY_FIRE = 0.10;
-			const RANGE_AY_FIRE = 0.002;
+			const RANGE_VY_FIRE = 0.15;
+			const RANGE_AY_FIRE = 0.003;
 			const RANGE_DEGREE = Math.PI / 180 * 360;
 			const DELTA_RATE_FIRE = 0.005;
 			const RANGE_RATE_FIRE = 0.005;
@@ -38,7 +38,7 @@
 			const COLOR_G_FIRE = 255;
 			const COLOR_B_FIRE = 255;
 
-			var clock, soul, mixer, action, frame = 0;
+			var clock, soul, highlight, mixer_soul, mixer_highlight, action_soul, action_highlight, frame = 0, delta;
 			const DELTA_START_SOUL = 50;
 			const DELTA_END_SOUL = 230;
 			const DELTA_Z_SOUL = -1.5;
@@ -85,25 +85,12 @@
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color(0x000000);
 
-				geometry = new THREE.PlaneGeometry(60, 60, 4, 4);
-				texture = new THREE.TextureLoader().load("resource/external/grass.jpg");
-				texture.wrapS = THREE.RepeatWrapping;
-				texture.wrapT = THREE.RepeatWrapping;
-				texture.repeat.set(4, 4);
-				var normal  = new THREE.TextureLoader().load( "resource/external/grass_normal.jpg" );
-				normal.wrapS = THREE.RepeatWrapping;
-				normal.wrapT = THREE.RepeatWrapping;
-				normal.repeat.set(4, 4);
+				geometry = new THREE.PlaneGeometry(120, 60, 1, 1);
 				material = new THREE.MeshPhongMaterial({
 					color: 0xffffff,
-					side: THREE.DoubleSide,
-					map: texture,
-					normalMap: normal,
-					normalScale: new THREE.Vector2(10, 10)
+					
+  side: THREE.DoubleSide,
 				});		
-
-				material.map.minFilter = THREE.LinearFilter;
-				material.normalMap.minFilter = THREE.LinearFilter;
 				mesh = new THREE.Mesh(geometry, material);
 				mesh.rotation.x = -0.5 * Math.PI;
 				mesh.receiveShadow = true;
@@ -163,9 +150,7 @@
 				});
 
 				new THREE.JSONLoader().load("resource/personal/bird.json", function (geometry, materials) {
-					material = new THREE.MeshPhongMaterial({
-						specular: {b: 0.05, g: 0.05, r: 0.05}
-					});
+					material = new THREE.MeshPhongMaterial();
 
 					mesh = new THREE.Mesh(geometry, material);
 					mesh.position.set(0, 1, -8);
@@ -178,19 +163,38 @@
 					materials.forEach(function (material) { 
 						material.specular = {b: 1, g: 1, r: 1};
 						material.skinning = true;
-						material.opacity = 0.5;
+						material.opacity = 0.4;
 						material.transparent = true;
 						material.side = THREE.FrontSide;
+						material.premultipliedAlpha = true;
 					});
 				
 					soul = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials));
 					soul.position.set(0, 0, DELTA_Z_SOUL);
 					soul.scale.set(0.01, 0.01, 0.01);
-					mixer = new THREE.AnimationMixer(soul);
-					action = mixer.clipAction(geometry.animations[1]);
-					action.setEffectiveWeight(1);
-					action.enabled = true;
+					mixer_soul = new THREE.AnimationMixer(soul);
+					action_soul = mixer_soul.clipAction(geometry.animations[1]);
+					action_soul.setEffectiveWeight(1);
+					action_soul.enabled = true;
 					scene.add(soul);
+				});
+
+				new THREE.JSONLoader().load("resource/personal/highlight.json", function (geometry, materials) {
+					materials.forEach(function (material) { 
+						material.skinning = true;
+						material.side = THREE.FrontSide;
+						material.opacity = 0.7;
+						material.transparent = true;
+					});
+				
+					highlight = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials));
+					highlight.position.set(0, 0, DELTA_Z_SOUL);
+					highlight.scale.set(0.01, 0.01, 0.01);
+					mixer_highlight = new THREE.AnimationMixer(highlight);
+					action_highlight = mixer_highlight.clipAction(geometry.animations[1]);
+					action_highlight.setEffectiveWeight(1);
+					action_highlight.enabled = true;
+					scene.add(highlight);
 				});
 
 				light = new THREE.SpotLight(0xffffff);
@@ -220,12 +224,19 @@
 						soul.rotation.x = 0.05 * time * Math.PI;
 						soul.scale.set(1.25 * time, 1.25 * time, 1.25 * time);
 						soul.position.set(0, 4 * time + 5, DELTA_Z_SOUL);
+						highlight.rotation.x = 0.05 * time * Math.PI;
+						highlight.scale.set(1.25 * time, 1.25 * time, 1.25 * time);
+						highlight.position.set(0, 4 * time + 5, DELTA_Z_SOUL);
 					} else if (frame == DELTA_END_SOUL) {
-						action.play();
+						action_soul.play();
+						action_highlight.play();
 						soul.rotation.x = 0.05 * Math.PI;
 						soul.scale.set(1.25, 1.25, 1.25);
 						soul.position.set(0, 9, DELTA_Z_SOUL);
-					}
+						highlight.rotation.x = 0.05 * Math.PI;
+						highlight.scale.set(1.25, 1.25, 1.25);
+						highlight.position.set(0, 9, DELTA_Z_SOUL);
+					} 
 				}	
 		
 				for(var i = 0; i < NUM_FIRE; ++i){
@@ -248,8 +259,11 @@
 					particle.mesh.position.set(particle.p[0], particle.p[1], particle.p[2]);
 				}
 				
-				if(mixer)
-					mixer.update(clock.getDelta());
+				delta = clock.getDelta();
+				if(mixer_soul)
+					mixer_soul.update(delta);
+				if(mixer_highlight)
+					mixer_highlight.update(delta);
 
 				renderer.render(scene, camera);
 			}
