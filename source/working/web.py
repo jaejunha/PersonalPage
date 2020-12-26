@@ -49,6 +49,10 @@ def checkVisit(ip):
 	now = datetime.datetime.now()
 	return now < dic_visit[ip]
 
+def calVisit():
+	now = datetime.datetime.now()
+	return now + datetime.timedelta(minutes = TIME_VISIT)
+
 class HandlerHTTP(BaseHTTPRequestHandler):
 
 	def setup(self):
@@ -83,8 +87,7 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 			global alert_login
 			if access:
 				alert_login = False
-				now = datetime.datetime.now()
-				dic_visit[self.client_address[0]] = now + datetime.timedelta(minutes = TIME_VISIT)
+				dic_visit[self.client_address[0]] = calVisit() 
 			else:
 				alert_login = True
 	
@@ -98,6 +101,7 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 			access = True
 
 			if checkVisit(ip_client):
+				dic_visit[ip_client] = calVisit()
 				self.path = "index.html"
 			elif alert_login:
 				self.path = "login_fail.html"
