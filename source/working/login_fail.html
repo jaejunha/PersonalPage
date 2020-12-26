@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<style>
+			body {
+				background-color: #faa;
+			}
+			.form {
+				display: flex;
+				height: 100vh;
+				justify-content: center;
+				align-items: center;
+			}
+			form {
+				border: 2px dashed #bcbcbc;
+				padding: 10px;
+				background-color: #fff;
+			}
+			.info { 
+				display: inline-block;
+				width: 80px; 
+			}
+			input {
+				width: 120px;
+			}
+			button {
+				display: block;
+				margin: 0 auto;
+				margin-top: 10px;
+				width: 200px;
+			}
+			div {
+				margin-top: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="form">
+			<form action="/check" method="post">
+				<center><span>Need to <b>SIGN IN</b></span></center>
+				<hr>
+				<div>
+					<span class="info">ID</span>
+					<input type="text" placeholder="Enter the ID" name="ID" required>
+				</div>
+				<div>
+					<span class="info">Password</span>
+					<input type="password" placeholder="Enter the password" name="pwd" required>
+				</div>
+				<div>
+					<button type="submit">Login</button>
+					<center><span>Check your Input!</span></center>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

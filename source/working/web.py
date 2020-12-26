@@ -1,14 +1,22 @@
 import sys
 import random
 import requests
+import datetime
 import urllib.request
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 CONST_PORT = None 
 CONST_8KB = 8192 
 
+CONST_ID = 0
+CONST_PWD = 1
+
+TIME_VISIT = 240
+
 list_account = []
-list_visit = []
+dic_visit = {}
+
+alert_login = False
 
 def getPort():
 	global CONST_PORT
@@ -26,13 +34,20 @@ def getAccount():
 		file = open("password.csv", "r")
 		for line in file.readlines():
 			list_ele = line.split(",")
-			list_account.append( (list_ele[0].strip(), list_ele[1].strip()) )
+			list_account.append( (list_ele[CONST_ID].strip(), list_ele[CONST_PWD].strip()) )
 	except FileNotFoundError:
 		print("관리자 계정을 만드세요!")
 		sys.exit(1)
 
 def checkImage(path):
 	return ".png" in path or ".jpg" in path or ".gif" in path or ".ico" in path
+
+def checkVisit(ip):
+	if (ip in dic_visit) is False:
+		return False
+
+	now = datetime.datetime.now()
+	return now < dic_visit[ip]
 
 class HandlerHTTP(BaseHTTPRequestHandler):
 
@@ -52,22 +67,28 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 		self.send_response(302)
 		self.send_header("Location", url)
 		self.end_headers()
+
 	def do_POST(self):
+		access = False
 		if self.path == "/check":
-			global list_visit
-			access = False
+
 			length = int(self.headers['Content-length'])
 			raw_data = self.rfile.read(length).decode("utf-8") 
 			list_data = raw_data.split("&")
+
 			for account in list_account:
-				if account[0] == list_data[0].split("=")[1] and account[1] == list_data[1].split("=")[1]:
+				if account[CONST_ID] == list_data[CONST_ID].split("=")[1] and account[CONST_PWD] == list_data[CONST_PWD].split("=")[1]:
 					access = True
+
+			global alert_login
 			if access:
-				list_visit.append(self.client_address[0])
-		
-			self.send_response(302)
-			self.send_header('Location', "/")
-			self.end_headers()
+				alert_login = False
+				now = datetime.datetime.now()
+				dic_visit[self.client_address[0]] = now + datetime.timedelta(minutes = TIME_VISIT)
+			else:
+				alert_login = True
+	
+			self._redirect("/")
 
 	def do_GET(self):
 		ip_client = self.client_address[0]
@@ -75,21 +96,21 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 		access = False
 		if self.path == "/":
 			access = True
-			if ip_client in list_visit:
+
+			if checkVisit(ip_client):
 				self.path = "index.html"
+			elif alert_login:
+				self.path = "login_fail.html"
 			else:
-				self.path = "login.html"
+				self.path = "login_normal.html"
 
 		elif self.path == "/logout":
 			access = True
-			global last_visit
 
-			for i, ip in enumerate(list_visit[:]):
-				if ip == ip_client:
-					del list_visit[i]
-					break
+			if checkVisit(ip_client):
+				del dic_visit[ip_client]
 				
-			self.path = "login.html"	
+			self.path = "login_normal.html"	
 
 		else:
 			self.path = "." + self.path
@@ -97,10 +118,13 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 		try:
 			if checkImage(self.path):
 				access = True
+
 				self._set_headers(200, self.path.split(".")[-1])
+
 				file = open(self.path, "rb")
 				data = file.read(CONST_8KB)
 				self.wfile.write(data)
+
 				while data:
 					data = file.read(CONST_8KB)
 					self.wfile.write(data)
