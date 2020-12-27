@@ -46,11 +46,11 @@
 			main {
 				position: relative;
 			}
-			menu, text, favorite {
+			menu, inner, favorite {
 				display: inline-block;
 				position: absolute;
 			}
-			menu div, text div, favorite div {
+			menu div, inner div, favorite div {
 				margin: 10px;
 			}
 			menu {
@@ -61,12 +61,21 @@
 			}
 			menu div {
 				background-color: rgba(0, 0, 0, 0.6);
+				padding: 5px;
+			}
+			menu div hr {
+				margin-right: 10px;
+				margin-left: 10px;
 			}
 			menu div span{
-				padding: 5px;
+				padding: 10px;
 				color: #fff;
 			}
-			text {
+			menu div a {
+				color: #fff;
+				text-decoration: none;
+			}
+			inner {
 				left: 200px;
 			}
 			favorite {
@@ -98,11 +107,13 @@
 			<menu>
 				<div>
 					<span>메뉴</span>
+					<hr>
+					:)menu.csv&
 				</div>
 			</menu>
-			<text>
+			<inner>
 				<div>본문</div>
-			</text>
+			</inner>
 			<favorite>
 				<div>즐겨찾기</div>
 			</favorite>

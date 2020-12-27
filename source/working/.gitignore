@@ -1,4 +1,5 @@
-config/*
+config/password.csv
+config/port.csv
 nohup.out
 img/background_*
 img/bird.png

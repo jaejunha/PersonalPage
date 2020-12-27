@@ -52,6 +52,18 @@ def calVisit():
 	now = datetime.datetime.now()
 	return now + datetime.timedelta(minutes = TIME_VISIT)
 
+def getMenu():
+	str = ""
+	file = open("config/menu.csv", "r")
+	for line in file.readlines():
+		if len(line) > 0:
+			list_line = line.split(",")
+			name = list_line[0].strip()
+			link = list_line[1].strip()
+			str += '<span><a href="' + link + '">' + name + "</a></span><br>"
+
+	return str[:-4]
+
 class HandlerHTTP(BaseHTTPRequestHandler):
 
 	def setup(self):
@@ -139,14 +151,11 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 				file = open(self.path, "r", encoding = "utf-8")
 				str_data = ""
 				for line in file.readlines():
-					"""
-					if ":)" in line:
+					if ":)menu.csv&" in line:
 						start = line.find(":)")
 						end = line.find("&")
-						path = "_post/" + line[start + 2: end] + ".txt"
-						content = getContent(path)
+						content = getMenu()
 						line = line.replace(line[start: end + 1], content)
-					"""	
 					str_data += line
 				self.wfile.write(str_data.encode())
 
