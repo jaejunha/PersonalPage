@@ -1,7 +1,35 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<meta charset="utf-8">
 		<style>
+			body {
+				overflow: hidden;
+			}
+			cover {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				opacity: 0.8;
+				background-image: url("img/background_login.jpg");
+				background-size: cover;
+				z-index: -1;
+			}
+			form div:nth-child(1) {
+				width: 200px;
+				line-height: 50px;
+				text-align: center;
+			}
+			form div:nth-child(1) span {
+                width: 120px;
+				vertical-align: middle;
+            }
+			img{
+				width: 50px;
+				vertical-align: middle;
+			}
 			sign-in {
 				display: flex;
 				height: 100vh;
@@ -11,6 +39,7 @@
 			form {
 				border: 2px dashed #bcbcbc;
 				padding: 10px;
+				padding-top: 0;
 				background-color: #fff;
 			}
 			form div span { 
@@ -29,14 +58,23 @@
 			div {
 				margin-top: 5px;
 			}
+			bottom {
+				position: absolute;
+				right: 10px;
+				bottom: 10px;
+			}
 		</style>
 	</head>
 	<body>
+		<cover></cover>
 		<sign-in>
 			<form action="/check" method="post">
-				<span>
-					<center>Need to <b>SIGN IN</b></center>
-				</span>
+				<div>
+					<img src="img/bird.png"/>
+					<span>
+						<b>Personal Page</b>
+					</span>
+				</div>
 				<hr>
 				<div>
 					<span>ID</span>
@@ -51,5 +89,8 @@
 				</div>
 			</form>
 		</sign-in>
+		<bottom>
+			Image from: https://pixabay.com/ko/photos/칠레-도로-산맥-자연-풍경-5056788/
+		</bottom>
 	</body>
 </html>

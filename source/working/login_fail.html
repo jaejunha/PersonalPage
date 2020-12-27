@@ -5,6 +5,19 @@
 			body {
 				background-color: #faa;
 			}
+			form div:nth-child(1) {
+				width: 200px;
+				line-height: 50px;
+				text-align: center;
+			}
+			form div:nth-child(1) span {
+                width: 120px;
+				vertical-align: middle;
+            }
+			img {
+				width: 50px;
+				vertical-align: middle;
+			}
 			sign-in {
 				display: flex;
 				height: 100vh;
@@ -14,6 +27,7 @@
 			form {
 				border: 2px dashed #bcbcbc;
 				padding: 10px;
+				padding-top: 0;
 				background-color: #fff;
 			}
 			form div span { 
@@ -37,9 +51,12 @@
 	<body>
 		<sign-in>
 			<form action="/check" method="post">
-				<span>
-					<center>Need to <b>SIGN IN</b></center>
-				</span>
+				<div>
+					<img src="img/bird.png"/>
+					<span>
+						<b>Personal Page</b>
+					</span>
+				</div>
 				<hr>
 				<div>
 					<span>ID</span>
