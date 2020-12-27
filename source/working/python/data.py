@@ -3,7 +3,7 @@ from python.replace import *
 CONST_8KB = 8192 
 
 def checkImage(path):
-		return (".png" in path) or (".jpg" in path) or (".gif" in path) or (".ico" in path)
+	return (".png" in path) or (".jpg" in path) or (".gif" in path) or (".ico" in path)
 
 def writeImage(res):
 	file = open(res.path, "rb")

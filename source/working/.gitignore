@@ -5,4 +5,4 @@ nohup.out
 img/background_*
 img/bird.png
 todo/*
-python/__pycache__*
+python/__pycache__/*

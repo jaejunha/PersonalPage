@@ -1,4 +1,7 @@
+import os
 from python.account import *
+
+CONST_WEEK = ["월", "화", "수", "목", "금", "토", "일"]
 
 dic_visit = {}
 dic_alert = {}
@@ -44,7 +47,27 @@ def todo(ip_client):
 		access = True
 	else:
 		access = False
-			
+	
+	now = datetime.datetime.now()
+	week = CONST_WEEK[now.weekday()]
+	name = now.strftime("todo/data/%Y-%m-%d.csv")
+	if os.path.isfile(name) is False:
+		os.system("touch " + name)
+
+		list_todo = []
+		file = open("todo/frame/frame.csv", "r")
+		for line in file.readlines():
+			list_line = line.split(",")
+			priority = int(list_line[0].strip())
+			item = list_line[1].strip()
+			possible = list_line[2].strip()
+			if week in possible:
+				list_todo.append( (priority, item) )
+
+		list_todo.sort(reverse = True)
+		for todo in list_todo:
+			os.system('echo "' + todo[1] + ', 0">> ' + name)
+		
 	path = "html/todo.html"
 
 	return path, access
