@@ -1,7 +1,9 @@
-import os
-from python.account import *
+# coding: utf8
 
-CONST_WEEK = ["월", "화", "수", "목", "금", "토", "일"]
+import urllib
+
+from python.account import *
+from python.todo import *
 
 dic_visit = {}
 dic_alert = {}
@@ -17,6 +19,20 @@ def check(res, list_account):
 		dic_visit[ip_client] = calSessionLength() 
 	else:
 		dic_alert[ip_client] = True
+
+def todo_input(res):
+	ip_client = res.client_address[0]
+	if checkVisit(dic_visit, ip_client) is False:
+		return 
+
+	length = int(res.headers['Content-length'])
+	raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
+
+	dic_todo = parseTodoInput(raw_input.replace("+", " ")) 
+	list_todo = getTodoList(datetime.datetime.now())
+	modifyTodoList(dic_todo, list_todo)
+	saveTodoList(datetime.datetime.now(), list_todo)
+		
 	
 def home(ip_client):
 	path = None
@@ -47,26 +63,8 @@ def todo(ip_client):
 		access = True
 	else:
 		access = False
-	
-	now = datetime.datetime.now()
-	week = CONST_WEEK[now.weekday()]
-	name = now.strftime("todo/data/%Y-%m-%d.csv")
-	if os.path.isfile(name) is False:
-		os.system("touch " + name)
 
-		list_todo = []
-		file = open("todo/frame/frame.csv", "r")
-		for line in file.readlines():
-			list_line = line.split(",")
-			priority = int(list_line[0].strip())
-			item = list_line[1].strip()
-			possible = list_line[2].strip()
-			if week in possible:
-				list_todo.append( (priority, item) )
-
-		list_todo.sort(reverse = True)
-		for todo in list_todo:
-			os.system('echo "' + todo[1] + ', 0">> ' + name)
+	makeTodoHTML(datetime.datetime.now())	
 		
 	path = "html/todo.html"
 

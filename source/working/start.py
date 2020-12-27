@@ -30,6 +30,9 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 		if self.path == "/check":
 			check(self, list_account)
 			self._redirect("/")
+		elif self.path == "/todo":
+			todo_input(self)
+			self._redirect("/")
 
 	def do_GET(self):
 		if self.path == "/":
