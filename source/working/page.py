@@ -1,101 +1,19 @@
 import sys
-import random
-import requests
-import datetime
-import urllib.request
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
-CONST_PORT = None 
+from python.init import *
+from python.account import *
+from python.replace import *
+
 CONST_8KB = 8192 
 
-CONST_ID = 0
-CONST_PWD = 1
-
-TIME_VISIT = 240
-
 list_account = []
-list_menu = []
+list_link = []
 dic_visit = {}
 dic_alert = {}
 
-def getPort():
-	global CONST_PORT
-
-	try:
-		file = open("config/port.csv", "r")
-		CONST_PORT = int(file.readlines()[0].strip())
-	except FileNotFoundError:
-		CONST_PORT = 80
-
-def getAccount():
-	try:
-		file = open("config/password.csv", "r")
-		for line in file.readlines():
-			list_ele = line.split(",")
-			list_account.append( (list_ele[CONST_ID].strip(), list_ele[CONST_PWD].strip()) )
-	except FileNotFoundError:
-		print("관리자 계정을 만드세요!")
-		sys.exit(1)
-
-def getLink():
-	try:
-		file = open("config/menu.csv", "r")
-		for line in file.readlines():
-			if len(line) > 0:
-				list_menu.append( line.split(",")[1].strip() )
-
-	except FileNotFoundError:
-		print("메뉴를 만들어주세요!")
-		sys.exit(1)	
-
 def checkImage(path):
 	return ".png" in path or ".jpg" in path or ".gif" in path or ".ico" in path
-
-def checkVisit(ip):
-	if (ip in dic_visit) is False:
-		return False
-
-	now = datetime.datetime.now()
-	return now < dic_visit[ip]
-
-def calVisit():
-	now = datetime.datetime.now()
-	return now + datetime.timedelta(minutes = TIME_VISIT)
-
-def getMenu():
-	str = ""
-	file = open("config/menu.csv", "r")
-	for line in file.readlines():
-		if len(line) > 0:
-			list_line = line.split(",")
-			name = list_line[0].strip()
-			link = list_line[1].strip()
-			str += "<span><a onclick='loadHTML(" + '"' + link + '");' + "'>" + name + "</a></span><br>"
-
-	return str[:-4]
-
-def getFavorite():
-	
-	str = ""
-	file = open("config/favorite.csv", "r")
-	for line in file.readlines():
-		if len(line) > 0:
-			list_line = line.split(",")
-			icon = list_line[0].strip()
-			name = list_line[1].strip()
-			link = list_line[2].strip()
-			str += '<div><a href="' + link + '" target="_blank"><img src="' + icon + '"/>&nbsp;<span>' + name + "</span></a></div>"
-	file.close()
-
-	file = open("config/favorite_private.csv", "r")
-	for line in file.readlines():
-		if len(line) > 0:
-			list_line = line.split(",")
-			icon = list_line[0].strip()
-			name = list_line[1].strip()
-			link = list_line[2].strip()
-			str += '<div><a href="' + link + '" target="_blank"><img src="' + icon + '"/>&nbsp;<span>' + name + "</span></a></div>"
-	return str[:-4]
 
 class HandlerHTTP(BaseHTTPRequestHandler):
 
@@ -120,18 +38,13 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 		access = False
 		if self.path == "/check":
 
-			length = int(self.headers['Content-length'])
-			raw_data = self.rfile.read(length).decode("utf-8") 
-			list_data = raw_data.split("&")
-
-			for account in list_account:
-				if account[CONST_ID] == list_data[CONST_ID].split("=")[1] and account[CONST_PWD] == list_data[CONST_PWD].split("=")[1]:
-					access = True
+			if checkAccount(self, list_account):
+				access = True
 
 			ip_client = self.client_address[0]
 			if access:
 				dic_alert[ip_client] = False
-				dic_visit[self.client_address[0]] = calVisit() 
+				dic_visit[self.client_address[0]] = calSessionLength() 
 			else:
 				dic_alert[ip_client] = True
 	
@@ -144,8 +57,8 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 		if self.path == "/":
 			access = True
 
-			if checkVisit(ip_client):
-				dic_visit[ip_client] = calVisit()
+			if checkVisit(dic_visit, ip_client):
+				dic_visit[ip_client] = calSessionLength()
 				self.path = "html/index.html"
 			elif ip_client in dic_alert.keys() and dic_alert[ip_client]:
 				self.path = "html/login_fail.html"
@@ -155,12 +68,12 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 		elif self.path == "/logout":
 			access = True
 
-			if checkVisit(ip_client):
+			if checkVisit(dic_visit, ip_client):
 				del dic_visit[ip_client]
 				
 			self.path = "html/login_normal.html"	
 
-		elif checkVisit(ip_client) and (self.path[1:] in list_menu):
+		elif checkVisit(dic_visit, ip_client) and (self.path[1:] in list_link):
 			access = True
 			
 			self.path = "html" + self.path + ".html"
@@ -213,8 +126,14 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 			print(e)
 
 if __name__ == "__main__":	
-	getPort()
-	getAccount()
-	getLink()
-	server_http = HTTPServer(("", CONST_PORT), HandlerHTTP)
+
+	port = getPort()
+
+	if getLink(list_link) is False:
+		sys.exit(1)
+
+	if getAccount(list_account) is False:
+		sys.exit(1)
+
+	server_http = HTTPServer(("", port), HandlerHTTP)
 	server_http.serve_forever()

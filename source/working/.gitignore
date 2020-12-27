@@ -4,3 +4,5 @@ config/favorite_private.csv
 nohup.out
 img/background_*
 img/bird.png
+todo/*
+python/__pycache__*
