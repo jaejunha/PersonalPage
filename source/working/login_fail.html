@@ -5,7 +5,7 @@
 			body {
 				background-color: #faa;
 			}
-			.form {
+			sign-in {
 				display: flex;
 				height: 100vh;
 				justify-content: center;
@@ -16,7 +16,7 @@
 				padding: 10px;
 				background-color: #fff;
 			}
-			.info { 
+			form div span { 
 				display: inline-block;
 				width: 80px; 
 			}
@@ -35,23 +35,27 @@
 		</style>
 	</head>
 	<body>
-		<div class="form">
+		<sign-in>
 			<form action="/check" method="post">
-				<center><span>Need to <b>SIGN IN</b></span></center>
+				<span>
+					<center>Need to <b>SIGN IN</b></center>
+				</span>
 				<hr>
 				<div>
-					<span class="info">ID</span>
+					<span>ID</span>
 					<input type="text" placeholder="Enter the ID" name="ID" required>
 				</div>
 				<div>
-					<span class="info">Password</span>
+					<span>Password</span>
 					<input type="password" placeholder="Enter the password" name="pwd" required>
 				</div>
 				<div>
 					<button type="submit">Login</button>
-					<center><span>Check your Input!</span></center>
 				</div>
+				<span>
+					<center>check your Input!</center>
+				</span>
 			</form>
-		</div>
+		</sign-in>
 	</body>
 </html>
