@@ -1,5 +1,6 @@
 config/password.csv
 config/port.csv
+config/favorite_private.csv
 nohup.out
 img/background_*
 img/bird.png
