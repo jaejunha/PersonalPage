@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="shortcut icon" href="img/logo/logo.ico">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<title>Personal Page</title>
+		<style>
+			body{
+				margin: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #fafafa;
+				overflow: hidden;
+			}
+			header {
+				display: table;
+				width: 100%;
+				height: 50px;
+				background-color: #fff;
+				border-bottom: 1px solid #dbdbdb;
+			}
+			header div {
+				display: table-cell;
+				text-align: center;
+				vertical-align: middle;
+			}
+			header div div {
+				display: inline-block;
+			}
+			header div div:nth-child(3) {
+				float: right;
+				padding-right: 10px;
+			}
+			main {
+				position: relative;
+			}
+			menu, text, favorite {
+				display: inline-block;
+				position: absolute;
+			}
+			menu {
+				margin: 0;
+				padding: 0;
+				left: 0;
+				width: 200px;
+			}
+			text {
+				left: 200px;
+			}
+			favorite {
+				right: 0;
+				width: 200px;
+			}
+		</style>
+		<script>	
+			$(document).ready(function() {
+				//do something
+			});
+		</script>
+	</head>
+	<body>
+		<header>
+			<div>
+				<div></div>
+				<div>Personal Page</div>
+				<div><a href="logout">로그아웃</a></div>
+			</div>
+		</header>
+		<main>
+			<menu>
+				<div>메뉴</div>
+			</menu>
+			<text>
+				<div>본문</div>
+			</text>
+			<favorite>
+				<div>즐겨찾기</div>
+			</favorite>
+		</main>
+	</body>
+</html>
