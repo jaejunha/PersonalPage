@@ -14,6 +14,7 @@ CONST_PWD = 1
 TIME_VISIT = 240
 
 list_account = []
+list_menu = []
 dic_visit = {}
 dic_alert = {}
 
@@ -27,8 +28,6 @@ def getPort():
 		CONST_PORT = 80
 
 def getAccount():
-	global list_account
-	
 	try:
 		file = open("config/password.csv", "r")
 		for line in file.readlines():
@@ -37,6 +36,17 @@ def getAccount():
 	except FileNotFoundError:
 		print("관리자 계정을 만드세요!")
 		sys.exit(1)
+
+def getLink():
+	try:
+		file = open("config/menu.csv", "r")
+		for line in file.readlines():
+			if len(line) > 0:
+				list_menu.append( line.split(",")[1].strip() )
+
+	except FileNotFoundError:
+		print("메뉴를 만들어주세요!")
+		sys.exit(1)	
 
 def checkImage(path):
 	return ".png" in path or ".jpg" in path or ".gif" in path or ".ico" in path
@@ -60,7 +70,7 @@ def getMenu():
 			list_line = line.split(",")
 			name = list_line[0].strip()
 			link = list_line[1].strip()
-			str += '<span><a href="' + link + '">' + name + "</a></span><br>"
+			str += "<span><a onclick='loadHTML(" + '"' + link + '");' + "'>" + name + "</a></span><br>"
 
 	return str[:-4]
 
@@ -150,6 +160,11 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 				
 			self.path = "html/login_normal.html"	
 
+		elif self.path[1:] in list_menu:
+			access = True
+			
+			self.path = "html" + self.path + ".html"
+
 		else:
 			self.path = "." + self.path
 
@@ -200,5 +215,6 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 if __name__ == "__main__":	
 	getPort()
 	getAccount()
+	getLink()
 	server_http = HTTPServer(("", CONST_PORT), HandlerHTTP)
 	server_http.serve_forever()

@@ -73,6 +73,7 @@
 				color: #fff;
 			}
 			menu div a {
+				cursor: pointer;
 				color: #fff;
 				text-decoration: none;
 			}
@@ -107,6 +108,9 @@
 			$(document).ready(function() {
 				//do something
 			});
+			function loadHTML(html){
+				$("inner div").load(html);
+			}
 		</script>
 	</head>
 	<body>
