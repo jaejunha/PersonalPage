@@ -160,7 +160,7 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 				
 			self.path = "html/login_normal.html"	
 
-		elif self.path[1:] in list_menu:
+		elif checkVisit(ip_client) and (self.path[1:] in list_menu):
 			access = True
 			
 			self.path = "html" + self.path + ".html"
