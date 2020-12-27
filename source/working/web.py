@@ -15,8 +15,7 @@ TIME_VISIT = 240
 
 list_account = []
 dic_visit = {}
-
-alert_login = False
+dic_alert = {}
 
 def getPort():
 	global CONST_PORT
@@ -84,12 +83,12 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 				if account[CONST_ID] == list_data[CONST_ID].split("=")[1] and account[CONST_PWD] == list_data[CONST_PWD].split("=")[1]:
 					access = True
 
-			global alert_login
+			ip_client = self.client_address[0]
 			if access:
-				alert_login = False
+				dic_alert[ip_client] = False
 				dic_visit[self.client_address[0]] = calVisit() 
 			else:
-				alert_login = True
+				dic_alert[ip_client] = True
 	
 			self._redirect("/")
 
@@ -103,7 +102,7 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 			if checkVisit(ip_client):
 				dic_visit[ip_client] = calVisit()
 				self.path = "index.html"
-			elif alert_login:
+			elif ip_client in dic_alert.keys() and dic_alert[ip_client]:
 				self.path = "login_fail.html"
 			else:
 				self.path = "login_normal.html"
