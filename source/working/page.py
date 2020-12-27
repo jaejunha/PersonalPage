@@ -21,7 +21,7 @@ def getPort():
 	global CONST_PORT
 
 	try:
-		file = open("port.csv", "r")
+		file = open("config/port.csv", "r")
 		CONST_PORT = int(file.readlines()[0].strip())
 	except FileNotFoundError:
 		CONST_PORT = 80
@@ -30,7 +30,7 @@ def getAccount():
 	global list_account
 	
 	try:
-		file = open("password.csv", "r")
+		file = open("config/password.csv", "r")
 		for line in file.readlines():
 			list_ele = line.split(",")
 			list_account.append( (list_ele[CONST_ID].strip(), list_ele[CONST_PWD].strip()) )
@@ -101,11 +101,11 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 
 			if checkVisit(ip_client):
 				dic_visit[ip_client] = calVisit()
-				self.path = "index.html"
+				self.path = "html/index.html"
 			elif ip_client in dic_alert.keys() and dic_alert[ip_client]:
-				self.path = "login_fail.html"
+				self.path = "html/login_fail.html"
 			else:
-				self.path = "login_normal.html"
+				self.path = "html/login_normal.html"
 
 		elif self.path == "/logout":
 			access = True
@@ -113,7 +113,7 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 			if checkVisit(ip_client):
 				del dic_visit[ip_client]
 				
-			self.path = "login_normal.html"	
+			self.path = "html/login_normal.html"	
 
 		else:
 			self.path = "." + self.path
