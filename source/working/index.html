@@ -2,7 +2,8 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<link rel="shortcut icon" href="img/logo/logo.ico">
+		<link rel="icon" type="image/png" href="img/bird.png">
+		<title>Personal Page:: Dreamline91</title>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<title>Personal Page</title>
 		<style>
@@ -18,7 +19,9 @@
 				width: 100%;
 				height: 50px;
 				background-color: #fff;
-				border-bottom: 1px solid #dbdbdb;
+				moz-box-shadow: 0 2px 2px rgba(108, 108, 108, 0.5);
+				-webkit-box-shadow: 0 2px 2px rgba(108, 108, 108, 0.5);
+				box-shadow: 0 2px 2px rgba(108, 108, 108, 0.5);
 			}
 			header div {
 				display: table-cell;
@@ -39,11 +42,21 @@
 				display: inline-block;
 				position: absolute;
 			}
+			menu div, text div, favorite div {
+				margin: 10px;
+			}
 			menu {
 				margin: 0;
 				padding: 0;
 				left: 0;
 				width: 200px;
+			}
+			menu div {
+				background-color: rgba(0, 0, 0, 0.6);
+			}
+			menu div span{
+				padding: 5px;
+				color: #fff;
 			}
 			text {
 				left: 200px;
@@ -69,7 +82,9 @@
 		</header>
 		<main>
 			<menu>
-				<div>메뉴</div>
+				<div>
+					<span>메뉴</span>
+				</div>
 			</menu>
 			<text>
 				<div>본문</div>
