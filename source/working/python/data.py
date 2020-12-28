@@ -1,4 +1,4 @@
-from python.replace import *
+from python.home import *
 
 CONST_8KB = 8192 
 
