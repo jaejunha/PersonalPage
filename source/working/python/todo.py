@@ -81,7 +81,7 @@ def makeTodoHTML(now):
 
 	tab = -1
 	file = open("html/todo.html", "w")
-	file.write('<meta charset="utf-8"><meta charset="utf-8">\n')
+	file.write('<meta charset="utf-8">\n')
 	file.write('<form action="/todo" method="post">\n')
 	for todo in list_todo:
 		priority = todo[0]
@@ -102,24 +102,25 @@ def makeTodoHTML(now):
 				file.write("진행완료<br>\n")
 
 		file.write("%s%s" % ("★" * priority, "☆" * (5 - priority)))
-		file.write(" %s<br>\n" % name)
+		file.write(" %s\n" % name)
+		file.write('<ele style="display: flex;">\n')
 		if status == 2:
-			file.write('<input name="%s_r" type="radio" value="2" checked="checked">진행완료\n' % name)
+			file.write('<input name="%s_r" type="radio" value="2" checked="checked">진행완료&nbsp;\n' % name)
 		else:
-			file.write('<input name="%s_r" type="radio" value="2">진행완료\n' % name)
+			file.write('<input name="%s_r" type="radio" value="2">진행완료&nbsp;\n' % name)
 		if status == 1:
-			file.write('<input name="%s_r" type="radio" value="1" checked="checked">진행연기\n' % name)
+			file.write('<input name="%s_r" type="radio" value="1" checked="checked">진행연기&nbsp;\n' % name)
 		else:
-			file.write('<input name="%s_r" type="radio" value="1">진행연기\n' % name)
+			file.write('<input name="%s_r" type="radio" value="1">진행연기&nbsp;\n' % name)
 		if status == 0:
-			file.write('<input name="%s_r" type="radio" value="0" checked="checked">미진행\n' % name)
+			file.write('<input name="%s_r" type="radio" value="0" checked="checked">미진행&nbsp;\n' % name)
 		else:
-			file.write('<input name="%s_r" type="radio" value="0">미진행\n' % name)
+			file.write('<input name="%s_r" type="radio" value="0">미진행&nbsp;\n' % name)
 		if reason == "":
-			file.write('<input type="text" placeholder="연기시 사유" name="%s_t">\n' % name)
+			file.write('<input type="text" placeholder="연기시 사유" name="%s_t" style="width: calc(100%%-10px); flex-grow: 1;">\n' % name)
 		else:
-			file.write('<input type="text" placeholder="연기시 사유" name="%s_t" value="%s">\n' % (name, reason) )
-		file.write("<br>\n")
+			file.write('<input type="text" placeholder="연기시 사유" name="%s_t" style="width: calc(100%%-10px); flex-grow: 1;" value="%s">\n' % (name, reason) )
+		file.write("</ele>\n")
 	file.write('<button type="submit">적용하기</button>\n')
 	file.write("</form>\n")
 	file.close()
