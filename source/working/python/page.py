@@ -61,10 +61,9 @@ def logout(ip_client):
 def todo(ip_client):
 	if checkVisit(dic_visit, ip_client):
 		access = True
+		makeTodoHTML(datetime.datetime.now())
 	else:
 		access = False
-
-	makeTodoHTML(datetime.datetime.now())	
 		
 	path = "html/todo.html"
 

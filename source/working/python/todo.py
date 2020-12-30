@@ -82,7 +82,8 @@ def makeTodoHTML(now):
 	tab = -1
 	file = open("html/todo.html", "w")
 	file.write('<meta charset="utf-8">\n')
-	file.write('<form action="/todo" method="post">\n')
+	file.write('<form action="/todo" method="post" style="height: 100%;">\n')
+	file.write('<div style="overflow-y: auto; height: calc(100% - 60px);">\n')
 	for todo in list_todo:
 		priority = todo[0]
 		status = todo[1]["status"]
@@ -101,6 +102,7 @@ def makeTodoHTML(now):
 				file.write("<br>\n")
 				file.write("진행완료<br>\n")
 
+		file.write('<div style="margin: 10px; padding: 5px; border: 1px solid #bcbcbc; background-color: rgba(255, 255, 255, 0.6); border-radius: 2px;">\n')
 		file.write("%s%s" % ("★" * priority, "☆" * (5 - priority)))
 		file.write(" %s\n" % name)
 		file.write('<ele style="display: flex;">\n')
@@ -121,6 +123,8 @@ def makeTodoHTML(now):
 		else:
 			file.write('<input type="text" placeholder="연기시 사유" name="%s_t" style="width: calc(100%%-10px); flex-grow: 1;" value="%s">\n' % (name, reason) )
 		file.write("</ele>\n")
+		file.write("</div>\n")
+	file.write("</div>\n")
 	file.write('<button type="submit">적용하기</button>\n')
 	file.write("</form>\n")
 	file.close()

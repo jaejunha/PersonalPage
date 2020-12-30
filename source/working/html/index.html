@@ -4,10 +4,14 @@
 		<meta charset="utf-8">
 		<meta name="robots" content="noindex,nofollow">
 		<link rel="icon" type="image/png" href="img/bird.png">
-		<title>Personal Page:: Dreamline91</title>
+		<title>Personal Page :: Dreamline91</title>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<title>Personal Page</title>
 		<style>
+			html{
+				height: 100%;
+				overflow: hidden;
+			}
 			body{
 				margin: 0;
 				width: 100%;
@@ -46,6 +50,7 @@
 			}
 			main {
 				position: relative;
+				height: 100%;
 			}
 			menu, inner, favorite {
 				display: inline-block;
@@ -80,12 +85,7 @@
 			inner {
 				left: 200px;
 				width: calc(100% - 400px);
-			}
-			inner div {
-				padding: 5px;
-				height: 100%;
-				background-color: rgba(255, 255, 255, 0.6);
-				border-radius: 2px;
+				height: calc(100% - 120px);
 			}
 			favorite {
 				right: 0;
@@ -138,7 +138,7 @@
 				</div>
 			</menu>
 			<inner>
-				<div>본문</div>
+				<div style="padding: 5px; height: 100%; background-color: rgba(255, 255, 255, 0.6); border-radius: 2px; overflow-y: hidden;">본문</div>
 			</inner>
 			<favorite>
 				<div>
