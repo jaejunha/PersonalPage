@@ -82,7 +82,7 @@ def makeTodoHTML(now):
 	tab = -1
 	file = open("html/todo.html", "w")
 	file.write('<meta charset="utf-8">\n')
-	file.write('<form action="/todo" method="post" style="height: 100%;">\n')
+	file.write('<form action="/todo" method="post" target="inner" style="height: 100%;">\n')
 	file.write('<div style="overflow-y: auto; height: calc(100% - 60px);">\n')
 	for todo in list_todo:
 		priority = todo[0]

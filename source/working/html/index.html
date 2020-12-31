@@ -56,7 +56,7 @@
 				display: inline-block;
 				position: absolute;
 			}
-			menu div, inner div, favorite div {
+			menu div, favorite div {
 				margin: 10px;
 			}
 			menu {
@@ -87,6 +87,18 @@
 				width: calc(100% - 400px);
 				height: calc(100% - 120px);
 			}
+			inner iframe {
+				margin-top: 10px; 
+				width: 100%; 
+				height: 100%; 
+				background-color: rgba(255, 255, 255, 0.6); 
+				border: 0; 
+				border-radius: 2px; 
+				overflow-y: hidden;
+			}
+			inner html {
+				padding: 5px;
+			}
 			favorite {
 				right: 0;
 				width: 200px;
@@ -116,7 +128,7 @@
 				//do something
 			});
 			function loadHTML(html){
-				$("inner div").load(html);
+				$("inner iframe").attr("src", html);
 			}
 		</script>
 	</head>
@@ -138,7 +150,7 @@
 				</div>
 			</menu>
 			<inner>
-				<div style="padding: 5px; height: 100%; background-color: rgba(255, 255, 255, 0.6); border-radius: 2px; overflow-y: hidden;">본문</div>
+				<iframe name="inner">본문</iframe>
 			</inner>
 			<favorite>
 				<div>

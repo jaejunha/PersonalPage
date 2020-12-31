@@ -32,7 +32,7 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 			self._redirect("/")
 		elif self.path == "/todo":
 			todo_input(self)
-			self._redirect("/")
+			self._redirect("/todo")
 
 	def do_GET(self):
 		if self.path == "/":
