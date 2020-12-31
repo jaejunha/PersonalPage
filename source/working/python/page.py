@@ -4,6 +4,7 @@ import urllib
 
 from python.account import *
 from python.todo import *
+from python.home import *
 
 dic_visit = {}
 dic_alert = {}
@@ -20,6 +21,17 @@ def check(res, list_account):
 	else:
 		dic_alert[ip_client] = True
 
+def home_input(res):
+	ip_client = res.client_address[0]
+	if checkVisit(dic_visit, ip_client) is False:
+		return 
+
+	length = int(res.headers['Content-length'])
+	raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
+
+	memo = parseHomeInput(raw_input.replace("+", " ")) 
+	saveMemo(memo)
+	
 def todo_input(res):
 	ip_client = res.client_address[0]
 	if checkVisit(dic_visit, ip_client) is False:
@@ -48,11 +60,12 @@ def root(ip_client):
 	return path, access
 
 def home(ip_client):
-	access = True
-
 	if checkVisit(dic_visit, ip_client):
-		del dic_visit[ip_client]
-			
+		access = True
+		makeHomeHTML()
+	else:
+		access = False
+		
 	path = "html/home.html"
 
 	return path, access

@@ -1,9 +1,16 @@
 config/password.csv
 config/port.csv
 config/favorite_private.csv
+
+memo.txt
+
 img/background_*
 img/bird.png
+
 todo/*
+
+html/home.html
 html/todo.html
+
 python/__pycache__/*
 nohup.out

@@ -33,3 +33,36 @@ def getFavorite():
 			str += '<div><a href="' + link + '" target="_blank"><img src="' + icon + '"/>&nbsp;<span>' + name + "</span></a></div>"
 	return str[:-4]
 
+def parseHomeInput(raw_input):
+	memo = raw_input.split("=")[1]
+
+	return memo 
+
+def saveMemo(content):
+	file = open("memo.txt", "w")
+	file.write(content)
+	file.close()
+
+def loadMemo():
+	content = ""
+
+	file = open("memo.txt", "r")
+	for line in file.readlines():
+		content += line
+	file.close()
+
+	return content
+
+def makeHomeHTML():
+	content = loadMemo()
+	
+	file = open("html/home.html", "w")
+	file.write('<html style="overflow-x: hidden;">\n')
+	file.write('<meta charset="utf-8">\n')
+	file.write('<form action="/home" method="post" target="inner" style="position: absolute; bottom: 0; width: 100%";>\n')
+	file.write('<textarea name="home" rows="10" style="width: calc(100%% - 20px);">%s</textarea>' % content)
+	file.write('<button type="submit">적용하기</button>')
+	file.write("</form>\n")
+	file.write("</html>")
+	file.close()
+	
