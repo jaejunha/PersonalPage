@@ -36,6 +36,8 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 
 	def do_GET(self):
 		if self.path == "/":
+			self.path, access = root(self.client_address[0])
+		elif self.path == "/home":
 			self.path, access = home(self.client_address[0])
 		elif self.path == "/logout":
 			self.path, access = logout(self.client_address[0])

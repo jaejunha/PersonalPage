@@ -123,13 +123,14 @@
 				bottom: 10px;
 			}
 		</style>
-		<script>	
-			$(document).ready(function() {
-				//do something
-			});
+		<script>
 			function loadHTML(html){
 				$("inner iframe").attr("src", html);
 			}
+			$(document).ready(function() {
+				// 초기 로드
+				$("inner iframe").attr("src", "home");
+			});
 		</script>
 	</head>
 	<body>
@@ -150,7 +151,7 @@
 				</div>
 			</menu>
 			<inner>
-				<iframe name="inner">본문</iframe>
+				<iframe name="inner"></iframe>
 			</inner>
 			<favorite>
 				<div>

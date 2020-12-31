@@ -32,9 +32,8 @@ def todo_input(res):
 	list_todo = getTodoList(datetime.datetime.now())
 	modifyTodoList(dic_todo, list_todo)
 	saveTodoList(datetime.datetime.now(), list_todo)
-		
 	
-def home(ip_client):
+def root(ip_client):
 	path = None
 	access = True
 
@@ -47,6 +46,18 @@ def home(ip_client):
 		path = "html/login_normal.html"
 
 	return path, access
+
+def home(ip_client):
+	access = True
+
+	if checkVisit(dic_visit, ip_client):
+		del dic_visit[ip_client]
+			
+	path = "html/home.html"
+
+	return path, access
+
+
 
 def logout(ip_client):
 	access = True
