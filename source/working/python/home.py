@@ -58,11 +58,15 @@ def makeHomeHTML():
 	
 	file = open("html/home.html", "w")
 	file.write('<html style="overflow-x: hidden;">\n')
+	file.write('<body style="margin: 10px;">\n')
 	file.write('<meta charset="utf-8">\n')
-	file.write('<form action="/home" method="post" target="inner" style="position: absolute; bottom: 0; width: 100%";>\n')
-	file.write('<textarea name="home" rows="10" style="width: calc(100%% - 20px);">%s</textarea>' % content)
-	file.write('<button type="submit">적용하기</button>')
+	file.write('<form action="/home" method="post" target="inner" style="position: absolute; bottom: 0; width: calc(100% - 20px)";>\n')
+	file.write('<textarea name="home" rows="10" style="width: 100%%;">%s</textarea>' % content)
+	file.write('<div style="width: 100%; text-align: right; margin-top: 10px;">\n')
+	file.write('<button type="submit">적용하기</button>\n')
+	file.write("</div>\n")
 	file.write("</form>\n")
+	file.write("</body>\n")
 	file.write("</html>")
 	file.close()
 	

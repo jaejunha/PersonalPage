@@ -82,8 +82,14 @@ def makeTodoHTML(now):
 	tab = -1
 	file = open("html/todo.html", "w")
 	file.write('<meta charset="utf-8">\n')
-	file.write('<form action="/todo" method="post" target="inner" style="height: 100%;">\n')
-	file.write('<div style="overflow-y: auto; height: calc(100% - 60px);">\n')
+	file.write("<html>")
+	file.write('<body style="margin: 10px">\n')
+	file.write('<div style="text-align: center;">\n')
+	file.write('<span style="display:inline-block; width:0; height:0; border-style:solid; border-width:10px;border-color:transparent #555 transparent transparent;"></span>\n')
+	file.write('<span style="display:inline-block; width:0; height:0; border-style:solid; border-width:10px;border-color:transparent transparent transparent #555;"></span>\n')
+	file.write("</div>\n")
+	file.write('<form action="/todo" method="post" target="inner" style="position: absolute; bottom: 0; width: calc(100% - 20px); height: calc(100% - 50px);">\n')
+	file.write('<div style="overflow-y: auto; height: calc(100% - 40px);">\n')
 	for todo in list_todo:
 		priority = todo[0]
 		status = todo[1]["status"]
@@ -125,6 +131,11 @@ def makeTodoHTML(now):
 		file.write("</ele>\n")
 		file.write("</div>\n")
 	file.write("</div>\n")
+	file.write('<div style="width: 100%; text-align: right; margin-top: 10px">\n')
 	file.write('<button type="submit">적용하기</button>\n')
+	file.write('<button type="button">항목편집</button>\n')
+	file.write("</div>\n")
 	file.write("</form>\n")
+	file.write("</body>\n")
+	file.write("</html>\n")
 	file.close()
