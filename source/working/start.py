@@ -38,14 +38,15 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 			self._redirect("/todo")
 
 	def do_GET(self):
+		print(self.path)
 		if self.path == "/":
 			self.path, access = root(self.client_address[0])
 		elif self.path == "/home":
 			self.path, access = home(self.client_address[0])
 		elif self.path == "/logout":
 			self.path, access = logout(self.client_address[0])
-		elif self.path == "/todo":
-			self.path, access = todo(self.client_address[0])
+		elif self.path.startswith("/todo"):
+			self.path, access = todo(self.client_address[0], self.path)
 		elif self.path == "/test":
 			self.path, access = test(self.client_address[0])
 		else:

@@ -35,7 +35,7 @@ def home_input(res):
 def todo_input(res):
 	ip_client = res.client_address[0]
 	if checkVisit(dic_visit, ip_client) is False:
-		return 
+		return
 
 	length = int(res.headers['Content-length'])
 	raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
@@ -82,10 +82,14 @@ def logout(ip_client):
 
 	return path, access
 
-def todo(ip_client):
+def todo(ip_client, path):
 	if checkVisit(dic_visit, ip_client):
 		access = True
-		makeTodoHTML(datetime.datetime.now())
+		if "?date=" in path:
+			str_date = path.split("?date=")[1]
+			makeTodoHTML(datetime.datetime.strptime(str_date, "%Y-%m-%d"))
+		else:
+			makeTodoHTML(datetime.datetime.now())
 	else:
 		access = False
 		

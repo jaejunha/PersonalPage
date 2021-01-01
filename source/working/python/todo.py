@@ -1,3 +1,5 @@
+import datetime
+
 CONST_WEEK = ["월", "화", "수", "목", "금", "토", "일"]
 
 def parseTodoInput(raw_input):
@@ -22,9 +24,9 @@ def modifyTodoList(dic_todo, list_todo):
 				todo[1]["reason"] = dic_todo[name]["reason"]
 				break
 
-def getTodoList(now):
+def getTodoList(date):
 	list_todo = []
-	file_name = now.strftime("todo/data/%Y-%m-%d.csv")
+	file_name = date.strftime("todo/data/%Y-%m-%d.csv")
 	
 	try:
 		file = open(file_name, "r")
@@ -46,7 +48,7 @@ def getTodoList(now):
 		"""
 		파일이 없는 경우
 		"""
-		week = CONST_WEEK[now.weekday()]
+		week = CONST_WEEK[date.weekday()]
 
 		file = open("todo/frame/frame.csv", "r")
 		for line in file.readlines():
@@ -67,8 +69,8 @@ def getTodoList(now):
 
 	return list_todo
 
-def saveTodoList(now, list_todo):
-	file_name = now.strftime("todo/data/%Y-%m-%d.csv")
+def saveTodoList(date, list_todo):
+	file_name = date.strftime("todo/data/%Y-%m-%d.csv")
 
 	file = open(file_name, "w")
 	for todo in list_todo:
@@ -76,19 +78,31 @@ def saveTodoList(now, list_todo):
 	
 	file.close()
 
-def makeTodoHTML(now):
-	list_todo = getTodoList(now)
+def makeTodoHTML(date):
+	now = datetime.datetime.now()
+
+	list_todo = getTodoList(date)
 
 	tab = -1
 	file = open("html/todo.html", "w")
 	file.write('<meta charset="utf-8">\n')
 	file.write("<html>")
 	file.write('<body style="margin: 10px">\n')
-	file.write('<div style="text-align: center;">\n')
-	file.write('<span style="display:inline-block; width:0; height:0; border-style:solid; border-width:10px;border-color:transparent #555 transparent transparent;"></span>\n')
-	file.write('<span style="display:inline-block; width:0; height:0; border-style:solid; border-width:10px;border-color:transparent transparent transparent #555;"></span>\n')
+	file.write('<div style="display: table; text-align: center; width: 100%;">\n')
+	file.write('<form action="/todo" method="get" target="inner">\n')
+	file.write('<input type="hidden" name="date" value="%s"/>\n' % ((date - datetime.timedelta(days = 1)).strftime("%Y-%m-%d")))
+	file.write('<button style="display: table-cell; width:0; height:0; border-style:solid; border-width:20px;border-color:transparent #555 transparent transparent; background-color: rgba(0, 0, 0, 0); cursor: pointer;"></button>\n')
+	file.write("</form>\n")
+	file.write('<span style="display: table-cell; font-size: 30px; vertical-align: middle; width: 30%%;">%s</span>\n' % date.strftime("%Y-%m-%d"))
+	file.write('<form action="/todo" method="get" target="inner">\n')
+	if now <= (date + datetime.timedelta(days = 1)):
+		file.write('<input type="hidden" name="date" value="%s"/>\n' % (now.strftime("%Y-%m-%d")))
+	else:
+		file.write('<input type="hidden" name="date" value="%s"/>\n' % ((date + datetime.timedelta(days = 1)).strftime("%Y-%m-%d")))
+	file.write('<button style="display: table-cell; width:0; height:0; border-style:solid; border-width:20px;border-color:transparent transparent transparent #555; background-color: rgba(0, 0, 0, 0); cursor: pointer;"></button>\n')
+	file.write("</form>\n")
 	file.write("</div>\n")
-	file.write('<form action="/todo" method="post" target="inner" style="position: absolute; bottom: 0; width: calc(100% - 20px); height: calc(100% - 50px);">\n')
+	file.write('<form action="/todo" method="post" target="inner" style="position: absolute; bottom: 0; width: calc(100% - 20px); height: calc(100% - 80px);">\n')
 	file.write('<div style="overflow-y: auto; height: calc(100% - 40px);">\n')
 	for todo in list_todo:
 		priority = todo[0]
