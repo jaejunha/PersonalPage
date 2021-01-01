@@ -4,10 +4,12 @@ import time
 
 PORT = 8000
 
-list_abs_folder = []
-list_abs_file = []
+origin = os.path.abspath("../../")
 
 def getAbs():
+    list_abs_folder = []
+    list_abs_file = []
+
     list_working = [os.path.abspath("../")]
 
     while len(list_working) > 0:
@@ -43,8 +45,27 @@ def getRel(list_abs_folder, list_abs_file):
 
     return list_rel_folder, list_rel_file
 
-list_abs_folder, list_abs_file = getAbs()
-list_rel_folder, list_rel_file = getRel(list_abs_folder, list_abs_file)
+def requestFile(path):
+    client.sendall(("request %s" % path).encode())
+            
+    os.chdir(origin)
+    list_folder = path.split("/")
+    len_folder = len(path.split("/")) - 1
+    file_name = list_folder[-1]
+
+    for i in range(len_folder):
+        os.chdir(list_folder[i])
+
+    print(path)
+    file = open(file_name, "wb")
+    data = client.recv(1024)
+    while data:
+        file.write(data)
+        data = client.recv(1024)
+    file.close()	
+
+def endRequest():
+    client.sendall("end".encode())
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -52,6 +73,9 @@ server.bind(("", PORT))
 server.listen()
 
 while True:
+    list_abs_folder, list_abs_file = getAbs()
+    list_rel_folder, list_rel_file = getRel(list_abs_folder, list_abs_file)
+
     client, addr = server.accept()
 
     data = client.recv(1024).decode()
@@ -69,7 +93,7 @@ while True:
         while data:
             client.send(data)
             data = file.read(1024)
-    
+
     client.close()
 
 server.close()
