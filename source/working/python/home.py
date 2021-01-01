@@ -31,7 +31,7 @@ def getFavorite():
 			name = list_line[1].strip()
 			link = list_line[2].strip()
 			str += '<div><a href="' + link + '" target="_blank"><img src="' + icon + '"/>&nbsp;<span>' + name + "</span></a></div>"
-	return str[:-4]
+	return str
 
 def parseHomeInput(raw_input):
 	memo = raw_input.split("=")[1]

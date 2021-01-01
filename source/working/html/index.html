@@ -68,15 +68,47 @@
 				color: #000;
 				text-decoration: none;
 			}
+			favorite {
+				display: table;
+				width: 100%;
+				height: 40px;
+				background-color: rgba(255, 255, 255, 0.5);
+				moz-box-shadow: 0 2px 2px rgba(108, 108, 108, 0.7);
+				-webkit-box-shadow: 0 2px 2px rgba(108, 108, 108, 0.7);
+				box-shadow: 0 2px 2px rgba(108, 108, 108, 0.7);
+
+			}
+			favorite div {
+				float: left;
+				display: table-cell;
+				text-align: center;
+				vertical-align: middle;
+			}
+			favorite div a {
+				color: #000;
+				text-decoration: none;
+			}
+			favorite div div { 
+				line-height: 40px;
+			}
+			favorite div div img {
+				margin-left: 5px;
+				margin-bottom: 2px;
+				height: 26px;
+				vertical-align: middle;
+			}
+			favorite div div span {
+				margin-right: 10px;
+			}
 			main {
 				position: relative;
 				height: 100%;
 			}
-			menu, inner, favorite {
+			menu, inner, empty {
 				display: inline-block;
 				position: absolute;
 			}
-			menu div, favorite div {
+			menu div {
 				margin: 10px;
 			}
 			menu {
@@ -86,7 +118,7 @@
 				width: 200px;
 			}
 			menu div {
-				background-color: rgba(0, 0, 0, 0.6);
+				background-color: rgba(0, 0, 0, 0.5);
 				padding: 5px;
 			}
 			menu div hr {
@@ -105,34 +137,24 @@
 			inner {
 				left: 200px;
 				width: calc(100% - 400px);
-				height: calc(100% - 120px);
+				height: calc(100% - 140px);
 			}
 			inner iframe {
 				margin-top: 10px; 
 				width: 100%; 
 				height: 100%; 
 				background-color: rgba(255, 255, 255, 0.6); 
+				moz-box-shadow: 0 0 8px rgba(108, 108, 108, 1);
+				-webkit-box-shadow: 0 0 8px rgba(108, 108, 108, 1);
+				box-shadow: 0 0 8px rgba(108, 108, 108, 1);
 				border: 0; 
 				border-radius: 2px; 
 				overflow: hidden;
 			}
-			favorite {
+			empty {
 				right: 0;
 				width: 200px;
-			}
-			favorite div a {
-				color: #000;
-				text-decoration: none;
-			}
-			favorite div div { 
-				line-height: 32px;
-			}
-			favorite div div img {
-				width: 32px;
-				vertical-align: middle;
-			}
-			favorite div div span {
-				vertical-align: middle;
+				height: 100px;
 			}
 			bottom {
 				position: absolute;
@@ -159,6 +181,11 @@
 				<div><a href="logout">로그아웃</a></div>
 			</div>
 		</header>
+		<favorite>
+			<div>
+				:)favorite.csv&
+			</div>
+		</favorite>
 		<main>
 			<menu>
 				<div>
@@ -170,12 +197,7 @@
 			<inner>
 				<iframe name="inner"></iframe>
 			</inner>
-			<favorite>
-				<div>
-					<span>즐겨찾기</span>
-					:)favorite.csv&
-				</div>
-			</favorite>
+			<empty></empty>
 		</main>
 		<bottom>
 			Image from: https://pixabay.com/ko/photos/가을-안개-경치-이슬-자연-961745
