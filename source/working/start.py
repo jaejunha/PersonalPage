@@ -73,10 +73,10 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":	
 
-	port = getPort()
+    port = getPort()
 
-	if getAccount(list_account) is False:
-		sys.exit(1)
+    if getAccount(list_account) is False:
+        sys.exit(1)
 
-	server_http = HTTPServer(("", port), HandlerHTTP)
-	server_http.serve_forever()
+    server_http = HTTPServer(("", port), HandlerHTTP)
+    server_http.serve_forever()
