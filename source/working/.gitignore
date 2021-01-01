@@ -11,6 +11,7 @@ todo/*
 
 html/home.html
 html/todo.html
+html/stock.html
 
 python/__pycache__/*
 nohup.out

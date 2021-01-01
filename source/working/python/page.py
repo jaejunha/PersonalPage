@@ -4,6 +4,7 @@ import urllib
 
 from python.account import *
 from python.todo import *
+from python.stock import *
 from python.home import *
 
 dic_visit = {}
@@ -83,19 +84,34 @@ def logout(ip_client):
 	return path, access
 
 def todo(ip_client, path):
-	if checkVisit(dic_visit, ip_client):
-		access = True
-		if "?date=" in path:
-			str_date = path.split("?date=")[1]
-			makeTodoHTML(datetime.datetime.strptime(str_date, "%Y-%m-%d"))
-		else:
-			makeTodoHTML(datetime.datetime.now())
-	else:
-		access = False
+    if checkVisit(dic_visit, ip_client):
+        access = True
+        if "?date=" in path:
+            str_date = path.split("?date=")[1]
+            makeTodoHTML(datetime.datetime.strptime(str_date, "%Y-%m-%d"))
+        else:
+            makeTodoHTML(datetime.datetime.now())
+    else:
+        access = False
 		
-	path = "html/todo.html"
+    path = "html/todo.html"
 
-	return path, access
+    return path, access
+
+def stock(ip_client, path):
+    if checkVisit(dic_visit, ip_client):
+        access = True
+        if "?date=" in path:
+            str_date = path.split("?date=")[1]
+            makeStockHTML(datetime.datetime.strptime(str_date, "%Y-%m-%d"))
+        else:
+            makeStockHTML(datetime.datetime.now())
+    else:
+        access = False
+		
+    path = "html/stock.html"
+
+    return path, access
 
 def test(ip_client):
 	if checkVisit(dic_visit, ip_client):
