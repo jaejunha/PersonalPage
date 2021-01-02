@@ -13,6 +13,20 @@ def makeScheduleHTML(date):
     file = open("html/schedule.html", "w")
     file.write('<meta charset="utf-8">\n')
     file.write("<html>\n")
+    file.write("<head>\n")
+    file.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>\n')
+    file.write("<script>\n")
+    file.write("var sel_row = -1;\n")
+    file.write("var sel_col = -1;\n")
+    file.write("function select(day, row, col){\n")
+    file.write("if (sel_row != -1 && sel_col != -1)\n")
+    file.write('$("table tr:nth-child(" + sel_row + ") td:nth-child(" + sel_col + ")").css("background-color", "rgba(255, 255, 255, 0.6)");\n')
+    file.write("sel_row = row;\n")
+    file.write("sel_col = col;\n")
+    file.write('$("table tr:nth-child(" + row + ") td:nth-child(" + col + ")").css("background-color", "rgba(0, 0, 0, 0.3)");\n')
+    file.write("}\n")
+    file.write("</script>\n")
+    file.write("</head>\n")
     file.write('<body style="margin: 10px">\n')
     file.write('<div style="display: table; text-align: center; width: 100%;">\n')
     file.write('<form action="/schedule" method="get" target="inner">\n')
@@ -31,7 +45,7 @@ def makeScheduleHTML(date):
     file.write('<button style="display: table-cell; width:0; height:0; border-style:solid; border-width:20px;border-color:transparent transparent transparent #555; background-color: rgba(0, 0, 0, 0); cursor: pointer;"></button>\n')
     file.write("</form>\n")
     file.write("</div>\n")
-    file.write('<table style="width: 100%; height: calc(70% - 50px); background-color: rgba(255, 255, 255, 0.6); border: 1px solid #bcbcbc;">\n')
+    file.write('<table style="width: 100%; height: calc(70% - 50px); border: 1px solid #bcbcbc; table-layout: fixed;">\n')
     start = datetime.date(date.year, date.month, 1)
     if date.month == 12:
         last = (datetime.date(date.year + 1, 1, 1) - datetime.timedelta(days = 1))
@@ -54,7 +68,7 @@ def makeScheduleHTML(date):
             file.write('<tr>\n')
             for j in range(NUM_WEEK):
                 if cur >= offset:
-                    file.write('<td style="padding: 5px; vertical-align: top; background-color: rgba(255, 255, 255, 0.6);">%d</td>\n' % day)
+                    file.write('<td style="padding: 5px; vertical-align: top; background-color: rgba(255, 255, 255, 0.6); cursor: pointer;" onclick="select(%d, %d, %d);">%d</td>\n' % (day, i + 2, j + 1, day))
                     day += 1
                 else:
                     file.write('<td style="padding: 5px; vertical-align: top;"></td>\n')
@@ -65,13 +79,13 @@ def makeScheduleHTML(date):
             file.write('<tr>\n')
             for j in range(NUM_WEEK):
                 if cur >= offset:
-                    file.write('<td style="padding: 5px; vertical-align: top; background-color: rgba(255, 255, 255, 0.6);">%d</td>\n' % day)
+                    file.write('<td style="padding: 5px; vertical-align: top; background-color: rgba(255, 255, 255, 0.6); cursor: pointer; overflow:hidden;" onclick="select(%d, %d, %d);">%d</td>\n' % (day, i + 2, j + 1, day))
                     day += 1
                 else:
                     file.write('<td style="padding: 5px; vertical-align: top;"></td>\n')
                 cur += 1
             file.write('</tr>\n')
     file.write("</table>")
-    file.write('<textarea style="margin-top: 10px; width: 100%; height: calc(30% - 50px);"></textarea>')
+    file.write('<textarea style="margin-top: 10px; width: 100%; height: calc(30% - 50px); resize:none;"></textarea>')
     file.write("</body>")
     file.write("</html>")
