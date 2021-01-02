@@ -3,18 +3,18 @@ import datetime
 CONST_WEEK = ["월", "화", "수", "목", "금", "토", "일"]
 
 def parseTodoInput(raw_input):
-	dic_todo = {}
-	for line in raw_input.split("&"):
-		list_line = line.split("=")
-		list_name = list_line[0]
-		name = list_name.split("_")[0]
-		if list_name.split("_")[1][0] == "r":
-			dic_todo[name] = {}
-			dic_todo[name]["status"] = int(list_line[1].strip())
-		else:
-			dic_todo[name]["reason"] = list_line[1].strip()
+    dic_todo = {}
+    for line in raw_input.split("&"):
+        list_line = line.split("=")
+        list_name = list_line[0]
+        name = list_name.split("_")[0]
+        if list_name.split("_")[1][0] == "r":
+            dic_todo[name] = {}
+            dic_todo[name]["status"] = int(list_line[1].strip())
+        else:
+            dic_todo[name]["reason"] = list_line[1].strip()
 
-	return dic_todo
+    return dic_todo
 
 def modifyTodoList(dic_todo, list_todo):
 	for name in dic_todo.keys():

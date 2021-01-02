@@ -45,7 +45,22 @@ def todo_input(res):
 	list_todo = getTodoList(datetime.datetime.now())
 	modifyTodoList(dic_todo, list_todo)
 	saveTodoList(datetime.datetime.now(), list_todo)
+
+def stock_input(res):
+    ip_client = res.client_address[0]
+    if checkVisit(dic_visit, ip_client) is False:
+        return
+
+    length = int(res.headers['Content-length'])
+    raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
+
+    print(raw_input)
+    dic_todo = parseTodoInput(raw_input.replace("+", " ")) 
+    list_todo = getTodoList(datetime.datetime.now())
+    modifyTodoList(dic_todo, list_todo)
+    saveTodoList(datetime.datetime.now(), list_todo)
 	
+
 def root(ip_client):
 	path = None
 	access = True
