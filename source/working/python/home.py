@@ -1,14 +1,17 @@
 def getMenu():
-	str = ""
-	file = open("config/menu.csv", "r")
-	for line in file.readlines():
-		if len(line) > 0:
-			list_line = line.split(",")
-			name = list_line[0].strip()
-			link = list_line[1].strip()
-			str += "<span><a onclick='loadHTML(" + '"' + link + '");' + "'>" + name + "</a></span><br>"
+    str = ""
+    file = open("config/menu.csv", "r")
+    for line in file.readlines():
+        if len(line) > 0:
+            list_line = line.split(",")
+            name = list_line[0].strip()
+            if name == "---":
+                str += '<hr style="margin-top: 4px; margin-bottom: 4px;">'
+            else:
+                link = list_line[1].strip()
+                str += "<span><a onclick='loadHTML(" + '"' + link + '");' + "'>" + name + "</a></span><br>"
 
-	return str[:-4]
+    return str[:-4]
 
 def getFavorite():
 	
