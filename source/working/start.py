@@ -48,6 +48,8 @@ class HandlerHTTP(BaseHTTPRequestHandler):
             self.path, access = home(self.client_address[0])
         elif self.path == "/logout":
             self.path, access = logout(self.client_address[0])
+        elif self.path.startswith("/schedule"):
+            self.path, access = schedule(self.client_address[0], self.path)
         elif self.path.startswith("/todo"):
             self.path, access = todo(self.client_address[0], self.path)
         elif self.path.startswith("/stock"):

@@ -3,9 +3,10 @@
 import urllib
 
 from python.account import *
+from python.home import *
+from python.schedule import *
 from python.todo import *
 from python.stock import *
-from python.home import *
 
 dic_visit = {}
 dic_alert = {}
@@ -54,13 +55,6 @@ def stock_input(res):
     length = int(res.headers['Content-length'])
     raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
 
-    print(raw_input)
-    dic_todo = parseTodoInput(raw_input.replace("+", " ")) 
-    list_todo = getTodoList(datetime.datetime.now())
-    modifyTodoList(dic_todo, list_todo)
-    saveTodoList(datetime.datetime.now(), list_todo)
-	
-
 def root(ip_client):
 	path = None
 	access = True
@@ -97,6 +91,21 @@ def logout(ip_client):
 	path = "html/login_normal.html"
 
 	return path, access
+
+def schedule(ip_client, path):
+    if checkVisit(dic_visit, ip_client):
+        access = True
+        if "?date=" in path:
+            str_date = path.split("?date=")[1]
+            makeScheduleHTML(datetime.datetime.strptime(str_date, "%Y-%m-%d"))
+        else:
+            makeScheduleHTML(datetime.datetime.now())
+    else:
+        access = False
+		
+    path = "html/schedule.html"
+
+    return path, access
 
 def todo(ip_client, path):
     if checkVisit(dic_visit, ip_client):
