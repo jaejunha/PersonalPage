@@ -56,6 +56,47 @@ def loadMemo():
 
 	return content
 
+def getBucketlist():
+    str = ""
+
+    find = False # <div> 구분선 넣어주기 용
+    num_ele = None
+
+    str = ""
+    file = open("bucketlist.csv", "r")
+    for line in file.readlines():
+        if len(line) > 0:
+            list_line = line.split(",")
+            if len(list_line) == 1:
+                if find:
+                    str += "</table>\n"
+                    str += "</div>\n"
+                    str += "<br>\n"
+                find = True
+                num_ele = 0
+
+                str += '<div>\n'
+                str += '<span style="font-size:20px;">%s</span>\n' % list_line[0]
+                str += '<table style="border: 1px solid #bcbcbc; width: 100%;">\n'
+    
+            else:
+                num_ele += 1
+                if num_ele == 1:
+                    str += '<tr style="font-weight: bold;">\n'
+                    for ele in list_line:
+                        str += '<td>%s</td>' % ele.strip()
+                    str += '</tr>\n'
+                else:
+                    str += '<tr style="background-color: rgba(255, 255, 255, 0.6);">\n'
+                    for ele in list_line:
+                        str += '<td>%s</td>' % ele.strip()
+                    str += '</tr>\n'
+
+    str += "</table>\n"
+    str += "</div>\n"
+
+    return str
+
 def makeHomeHTML():
     content = loadMemo()
 	
@@ -66,14 +107,7 @@ def makeHomeHTML():
     file.write('<div>\n')
     file.write('<span style="font-size:30px;">Bucket List</span>')
     file.write("</div>\n")
-    file.write('<div>\n')
-    file.write('<span style="font-size:20px;">기본 키워드 5개</span>')
-    file.write("<table>현재/목표</table>")
-    file.write("</div>\n")
-    file.write('<div>\n')
-    file.write('<span style="font-size:20px;">기타</span>')
-    file.write('<span>여행, 관계, etc...</span>')
-    file.write("</div>\n")
+    file.write(getBucketlist())
     file.write('<form action="/home" method="post" target="inner" style="position: absolute; bottom: 0; width: calc(100% - 20px)";>\n')
     file.write('<textarea name="home" rows="10" style="width: 100%%; resize: none;">%s</textarea>' % content)
     file.write('<div style="width: 100%; text-align: right; margin-top: 10px;">\n')

@@ -2,6 +2,7 @@ config/password.csv
 config/port.csv
 config/favorite_private.csv
 
+bucketlist.csv
 memo.txt
 
 img/background_*
