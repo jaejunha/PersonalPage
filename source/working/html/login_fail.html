@@ -1,12 +1,26 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<meta charset="utf-8">
 		<meta name="robots" content="noindex,nofollow">
 		<link rel="icon" type="image/png" href="img/bird.png">
+		<link rel="stylesheet" type="text/css" href="css/no_drag.css">
 		<title>Personal Page :: Dreamline91</title>
 		<style>
 			body {
 				background-color: #faa;
+				overflow: hidden;
+			}
+			cover {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				opacity: 0.5;
+				background-image: url("img/background_login.jpg");
+				background-size: cover;
+				z-index: -1;
 			}
 			form {
 				box-shadow: 0 0 10px rgba(0, 0, 0, 1);
@@ -40,6 +54,9 @@
 				display: inline-block;
 				width: 80px; 
 			}
+			error center {
+				margin-top: 5px;
+			}
 			input {
 				width: 120px;
 			}
@@ -57,9 +74,15 @@
 			div {
 				margin-top: 5px;
 			}
+			bottom {
+				position: absolute;
+				right: 10px;
+				bottom: 10px;
+			}
 		</style>
 	</head>
 	<body>
+		<cover></cover>
 		<sign-in>
 			<form action="/check" method="post">
 				<div>
@@ -80,10 +103,14 @@
 				<div>
 					<button type="submit">Login</button>
 				</div>
-				<span>
+				<error>
 					<center>check your Input!</center>
-				</span>
+				</error>
 			</form>
 		</sign-in>
+		<bottom>
+			Image from: https://pixabay.com/ko/photos/칠레-도로-산맥-자연-풍경-5056788/
+		</bottom>
+
 	</body>
 </html>

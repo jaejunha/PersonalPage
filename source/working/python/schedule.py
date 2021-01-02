@@ -14,6 +14,7 @@ def makeScheduleHTML(date):
     file.write('<meta charset="utf-8">\n')
     file.write("<html>\n")
     file.write("<head>\n")
+    file.write('<link rel="stylesheet" type="text/css" href="css/no_drag.css">\n')
     file.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>\n')
     file.write("<script>\n")
     file.write("var sel_row = -1;\n")

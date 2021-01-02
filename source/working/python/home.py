@@ -102,6 +102,7 @@ def makeHomeHTML():
 	
     file = open("html/home.html", "w")
     file.write('<html style="overflow-x: hidden;">\n')
+    file.write('<link rel="stylesheet" type="text/css" href="css/no_drag.css">\n')
     file.write('<body style="margin: 10px;">\n')
     file.write('<meta charset="utf-8">\n')
     file.write('<div>\n')

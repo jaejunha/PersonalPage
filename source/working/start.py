@@ -15,8 +15,8 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 
     def _set_headers(self, code, type = "html"):
         self.send_response(code)
-        if type == "html":
-            self.send_header('Content-type', 'text/html')
+        if type == "html" or type == "css" or type == "js":
+            self.send_header('Content-type', 'text/' + type)
         else:
             self.send_header('Content-type', 'image/' + type)
         self.end_headers()
@@ -61,9 +61,9 @@ class HandlerHTTP(BaseHTTPRequestHandler):
             self.path = "." + self.path
 
         try:
-            if checkImage(self.path):
+            if checkObject(self.path):
                 self._set_headers(200, self.path.split(".")[-1])
-                writeImage(self)
+                writeObject(self)
 	
             else:
                 if access is False:

@@ -2,10 +2,10 @@ from python.home import *
 
 CONST_8KB = 8192 
 
-def checkImage(path):
-	return (".png" in path) or (".jpg" in path) or (".gif" in path) or (".ico" in path)
+def checkObject(path):
+    return (".png" in path) or (".jpg" in path) or (".gif" in path) or (".ico" in path) or (".css" in path) or (".js" in path)
 
-def writeImage(res):
+def writeObject(res):
 	file = open(res.path, "rb")
 	data = file.read(CONST_8KB)
 	res.wfile.write(data)
