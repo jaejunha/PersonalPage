@@ -88,8 +88,11 @@ def getBucketlist():
                     str += '</tr>\n'
                 else:
                     str += '<tr style="background-color: rgba(255, 255, 255, 0.6);">\n'
-                    for ele in list_line:
-                        str += '<td>%s</td>' % ele.strip()
+                    for i, ele in enumerate(list_line):
+                        if i == 0:
+                            str += '<td style="text-align: center;"><img src="img/%s"/></td>' % ele.strip()
+                        else:
+                            str += '<td>%s</td>' % ele.strip()
                     str += '</tr>\n'
 
     str += "</table>\n"

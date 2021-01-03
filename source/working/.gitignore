@@ -5,6 +5,11 @@ config/favorite_private.csv
 bucketlist.csv
 memo.txt
 
+img/programmer.png
+img/artist.png
+img/marathoner.png
+img/trader.png
+img/meditation.png
 img/background_*
 img/bird.png
 
