@@ -61,7 +61,16 @@ def saveSchedule(ym, day, content):
 def getOptionTD(height, year, month, day, row, col):
     str = 'style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap; padding: 5px; height: %f%%; vertical-align: top; background-color: rgba(255, 255, 255, 0.6); cursor: pointer;" onclick="select(%d, %d, %d, %d, %d);"' % (height, year, month, day, row, col)
     return str
- 
+
+def getSummary(dic_content, day):
+    str = ""
+    list_line = dic_content[day].split("\n")
+    for line in list_line:
+        if len(line) > 0:
+            str += line[0] + " "
+
+    return str.strip()
+
 
 def makeScheduleHTML(date):
 
@@ -135,7 +144,7 @@ def makeScheduleHTML(date):
             for j in range(NUM_WEEK):
                 if cur >= offset:
                     if day in dic_content.keys():
-                        file.write('<td %s>%d<div style="overflow:hidden; text-overflow: ellipsis;">%s</div></td>\n' % (getOptionTD((90 / 4), start.year, start.month, day, i + 3, j + 1), day, dic_content[day]))
+                        file.write('<td %s>%d<div style="overflow:hidden; text-overflow: ellipsis;">%s</div></td>\n' % (getOptionTD((90 / 4), start.year, start.month, day, i + 3, j + 1), day, getSummary(dic_content, day)))
                     else:
                         file.write('<td %s>%d</td>\n' % (getOptionTD((90 / 4), start.year, start.month, day, i + 3, j + 1), day))
                     day += 1
@@ -149,7 +158,7 @@ def makeScheduleHTML(date):
             for j in range(NUM_WEEK):
                 if cur >= offset:
                     if day in dic_content.keys():
-                        file.write('<td %s>%d<div style="overflow:hidden; text-overflow: ellipsis;">%s</div></td>\n' % (getOptionTD((90 / 5), start.year, start.month, day, i + 3, j + 1), day, dic_content[day]))
+                        file.write('<td %s>%d<div style="overflow:hidden; text-overflow: ellipsis;">%s</div></td>\n' % (getOptionTD((90 / 5), start.year, start.month, day, i + 3, j + 1), day, getSummary(dic_content, day)))
                     else:
                         file.write('<td %s>%d</td>\n' % (getOptionTD((90 / 5), start.year, start.month, day, i + 3, j + 1), day))
                     day += 1
