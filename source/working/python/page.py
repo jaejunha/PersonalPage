@@ -33,7 +33,21 @@ def home_input(res):
 
 	memo = parseHomeInput(raw_input.replace("+", " ")) 
 	saveMemo(memo)
-	
+
+def schedule_input(res):
+    ip_client = res.client_address[0]
+    if checkVisit(dic_visit, ip_client) is False:
+        return ""
+
+    length = int(res.headers['Content-length'])
+    raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
+
+    ym, day, content = parseScheduleInput(raw_input.replace("+", " ")) 
+    saveSchedule(ym, day, content)
+    str = "?date=%4d-%02d-%02d" % ((ym / 100), ym % 100, day)
+
+    return str
+
 def todo_input(res):
 	ip_client = res.client_address[0]
 	if checkVisit(dic_visit, ip_client) is False:

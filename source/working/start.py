@@ -33,6 +33,9 @@ class HandlerHTTP(BaseHTTPRequestHandler):
         elif self.path == "/home":
             home_input(self)
             self._redirect("/home")
+        elif self.path == "/schedule":
+            para = schedule_input(self)
+            self._redirect("/schedule" + para)
         elif self.path == "/todo":
             todo_input(self)
             self._redirect("/todo")
