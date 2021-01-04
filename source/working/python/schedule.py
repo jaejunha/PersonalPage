@@ -59,8 +59,15 @@ def saveSchedule(ym, day, content):
         os.chdir("../")
 
 def getOptionTD(height, year, month, day, row, col):
-    str = 'style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap; padding: 5px; height: %f%%; vertical-align: top; background-color: rgba(255, 255, 255, 0.6); cursor: pointer;" onclick="select(%d, %d, %d, %d, %d);"' % (height, year, month, day, row, col)
-    return str
+    str_style = 'style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap; padding: 5px; height: %f%%; vertical-align: top; background-color: rgba(255, 255, 255, 0.6); cursor: pointer; ' % height
+    
+    now = datetime.datetime.today()
+    if year == now.year and month == now.month and day == now.day:
+        str_style += 'border: 2px solid #ffd700;'
+    str_style += '"'
+
+    str_onclick = 'onclick="select(%d, %d, %d, %d, %d);"' % (year, month, day, row, col)
+    return str_style + " " + str_onclick
 
 def getSummary(dic_content, day):
     str = ""
@@ -143,10 +150,10 @@ def makeScheduleHTML(date):
             file.write('<tr">\n')
             for j in range(NUM_WEEK):
                 if cur >= offset:
+                    file.write('<td %s>%d\n' % (getOptionTD((90 / 4), start.year, start.month, day, i + 3, j + 1), day))
                     if day in dic_content.keys():
-                        file.write('<td %s>%d<div style="overflow:hidden; text-overflow: ellipsis;">%s</div></td>\n' % (getOptionTD((90 / 4), start.year, start.month, day, i + 3, j + 1), day, getSummary(dic_content, day)))
-                    else:
-                        file.write('<td %s>%d</td>\n' % (getOptionTD((90 / 4), start.year, start.month, day, i + 3, j + 1), day))
+                        file.write('<div style="overflow:hidden; text-overflow: ellipsis;">%s</div>\n' % getSummary(dic_content, day))
+                    file.write("</td>\n")
                     day += 1
                 else:
                     file.write('<td style="padding: 5px; vertical-align: top;"></td>\n')
@@ -157,10 +164,10 @@ def makeScheduleHTML(date):
             file.write('<tr>\n')
             for j in range(NUM_WEEK):
                 if cur >= offset:
+                    file.write('<td %s>%d\n' % (getOptionTD((90 / 5), start.year, start.month, day, i + 3, j + 1), day))
                     if day in dic_content.keys():
-                        file.write('<td %s>%d<div style="overflow:hidden; text-overflow: ellipsis;">%s</div></td>\n' % (getOptionTD((90 / 5), start.year, start.month, day, i + 3, j + 1), day, getSummary(dic_content, day)))
-                    else:
-                        file.write('<td %s>%d</td>\n' % (getOptionTD((90 / 5), start.year, start.month, day, i + 3, j + 1), day))
+                        file.write('<div style="overflow:hidden; text-overflow: ellipsis;">%s</div>\n' % getSummary(dic_content, day))
+                    file.write("</td>\n")
                     day += 1
                 else:
                     file.write('<td style="padding: 5px; vertical-align: top;"></td>\n')
