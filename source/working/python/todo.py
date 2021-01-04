@@ -4,17 +4,22 @@ CONST_WEEK = ["월", "화", "수", "목", "금", "토", "일"]
 
 def parseTodoInput(raw_input):
     dic_todo = {}
+    date = datetime.datetime.now()
     for line in raw_input.split("&"):
         list_line = line.split("=")
         list_name = list_line[0]
         name = list_name.split("_")[0]
-        if list_name.split("_")[1][0] == "r":
-            dic_todo[name] = {}
-            dic_todo[name]["status"] = int(list_line[1].strip())
-        else:
-            dic_todo[name]["reason"] = list_line[1].strip()
+        try:
+            if list_name.split("_")[1][0] == "r":
+                dic_todo[name] = {}
+                dic_todo[name]["status"] = int(list_line[1].strip())
+            else:
+                dic_todo[name]["reason"] = list_line[1].strip()
+        except:
+            list_date = list_line[1].strip().split("-")
+            date = datetime.date(int(list_date[0]), int(list_date[1]), int(list_date[2]))
 
-    return dic_todo
+    return dic_todo, date
 
 def modifyTodoList(dic_todo, list_todo):
 	for name in dic_todo.keys():
@@ -154,6 +159,7 @@ def makeTodoHTML(date):
         file.write('<button type="submit">적용하기</button>\n')
         file.write('<button type="button">항목편집</button>\n')
         file.write("</div>\n")
+        file.write('<input type="hidden" name="date" value="%s"/>\n' % (date.strftime("%Y-%m-%d")))
         file.write("</form>\n")
     file.write("</body>\n")
     file.write("</html>\n")

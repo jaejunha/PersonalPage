@@ -37,8 +37,8 @@ class HandlerHTTP(BaseHTTPRequestHandler):
             para = schedule_input(self)
             self._redirect("/schedule" + para)
         elif self.path == "/todo":
-            todo_input(self)
-            self._redirect("/todo")
+            para = todo_input(self)
+            self._redirect("/todo" + para)
         elif self.path == "/stock":
             stock_input(self)
             self._redirect("/stock")

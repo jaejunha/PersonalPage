@@ -49,17 +49,22 @@ def schedule_input(res):
     return str
 
 def todo_input(res):
-	ip_client = res.client_address[0]
-	if checkVisit(dic_visit, ip_client) is False:
-		return
+    ip_client = res.client_address[0]
+    if checkVisit(dic_visit, ip_client) is False:
+        return
 
-	length = int(res.headers['Content-length'])
-	raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
+    length = int(res.headers['Content-length'])
+    raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
 
-	dic_todo = parseTodoInput(raw_input.replace("+", " ")) 
-	list_todo = getTodoList(datetime.datetime.now())
-	modifyTodoList(dic_todo, list_todo)
-	saveTodoList(datetime.datetime.now(), list_todo)
+    dic_todo, date = parseTodoInput(raw_input.replace("+", " ")) 
+    list_todo = getTodoList(datetime.datetime.now())
+    modifyTodoList(dic_todo, list_todo)
+    saveTodoList(date, list_todo)
+
+    str = date.strftime("?date=%Y-%m-%d")
+
+    return str
+
 
 def stock_input(res):
     ip_client = res.client_address[0]
