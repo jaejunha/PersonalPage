@@ -108,9 +108,14 @@ def makeHomeHTML():
     file.write('<link rel="stylesheet" type="text/css" href="css/no_drag.css">\n')
     file.write('<body style="margin: 10px;">\n')
     file.write('<meta charset="utf-8">\n')
-    file.write('<div style="width: 100%; height: 60%; overflow-y: auto;">\n')
+    file.write('<div style="width: 100%; height: 40%; text-align: center;">\n')
+    file.write('<img src="img/main.gif" style="width: 100%; height: 100%; object-fit: contain;"/>\n')
+    file.write('</div>')
+    file.write('<div style="width: 100%; height: 20%; overflow-y: auto;">\n')
+    """
     file.write('<span style="font-size:30px;">Bucket List</span>')
     file.write(getBucketlist())
+    """
     file.write("</div>\n")
     file.write('<form action="/home" method="post" target="inner" style="margin-top: 10px; margin-bottom: 0; width: 100%; height: calc(40% - 10px);">\n')
     file.write('<span style="font-size:30px;">Memo</span>')

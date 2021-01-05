@@ -1,10 +1,11 @@
 config/password.csv
 config/port.csv
 config/favorite_private.csv
+config/bucketlist.csv
 
-bucketlist.csv
 memo.txt
 
+img/main.*
 img/programmer.png
 img/artist.png
 img/marathoner.png
