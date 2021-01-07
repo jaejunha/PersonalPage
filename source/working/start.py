@@ -1,4 +1,6 @@
 import sys
+import ssl
+
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 from python.init import *
@@ -91,4 +93,5 @@ if __name__ == "__main__":
         sys.exit(1)
 
     server_http = HTTPServer(("", port), HandlerHTTP)
+    server_http.socket = ssl.wrap_socket(server_http.socket, server_side = True, certfile = "server.pem", ssl_version = ssl.PROTOCOL_TLS)
     server_http.serve_forever()
