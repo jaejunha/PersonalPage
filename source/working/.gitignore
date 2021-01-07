@@ -5,6 +5,8 @@ config/bucketlist.csv
 
 memo.txt
 
+font/*
+
 img/main.*
 img/programmer.png
 img/artist.png

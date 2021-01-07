@@ -17,6 +17,8 @@ class HandlerHTTP(BaseHTTPRequestHandler):
         self.send_response(code)
         if type == "html" or type == "css" or type == "js":
             self.send_header('Content-type', 'text/' + type)
+        elif type == "ttf":
+            self.send_header('Content-type', 'application/x-font-' + type)
         else:
             self.send_header('Content-type', 'image/' + type)
         self.end_headers()
