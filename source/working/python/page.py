@@ -57,7 +57,7 @@ def todo_input(res):
     raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
 
     dic_todo, date = parseTodoInput(raw_input.replace("+", " ")) 
-    list_todo = getTodoList(datetime.datetime.now())
+    list_todo = getTodoList(date)
     modifyTodoList(dic_todo, list_todo)
     saveTodoList(date, list_todo)
 
