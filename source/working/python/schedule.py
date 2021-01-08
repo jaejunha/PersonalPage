@@ -5,11 +5,10 @@ CONST_MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "O
 CONST_WEEK = ["월", "화", "수", "목", "금", "토", "일"]
 NUM_WEEK = 7
 
-def parseScheduleInput(raw_input):
+def parseScheduleInput(dic_input):
 
-    list_input = raw_input.split("&")
-    date = int(list_input[0].split("=")[1].strip())
-    content = list_input[1].split("=")[1].strip()
+    date = int(dic_input["ymday"])
+    content = dic_input["schedule"].strip()
     ym = int(date / 100)
     day = date % 100
 

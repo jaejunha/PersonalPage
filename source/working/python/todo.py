@@ -2,22 +2,20 @@ import datetime
 
 CONST_WEEK = ["월", "화", "수", "목", "금", "토", "일"]
 
-def parseTodoInput(raw_input):
+def parseTodoInput(dic_input):
+    list_date = dic_input["date"].split("-")
+    date = datetime.date(int(list_date[0]), int(list_date[1]), int(list_date[2]))
+
     dic_todo = {}
-    date = datetime.datetime.now()
-    for line in raw_input.split("&"):
-        list_line = line.split("=")
-        list_name = list_line[0]
-        name = list_name.split("_")[0]
-        try:
-            if list_name.split("_")[1][0] == "r":
-                dic_todo[name] = {}
-                dic_todo[name]["status"] = int(list_line[1].strip())
-            else:
-                dic_todo[name]["reason"] = list_line[1].strip()
-        except:
-            list_date = list_line[1].strip().split("-")
-            date = datetime.date(int(list_date[0]), int(list_date[1]), int(list_date[2]))
+    for key in dic_input.keys():
+        if key == "date":
+            continue
+        name = key.split("_")[0]
+        if key.split("_")[1] == "r":
+            dic_todo[name] = {}
+            dic_todo[name]["status"] = int(dic_input[key])
+        else:
+            dic_todo[name]["reason"] = dic_input[key]
 
     return dic_todo, date
 
@@ -42,7 +40,7 @@ def getTodoList(date):
             status = int(list_line[2].strip())
             reason = ""
             if len(list_line) > 3:
-                reason = list_line[3].strip()
+                reason = list_line[3].replace("%2C", ",").strip()
 
             list_todo.append( (priority, {"name": name, "status": status, "reason": reason}) )
 
@@ -82,7 +80,7 @@ def saveTodoList(date, list_todo):
 
 	file = open(file_name, "w")
 	for todo in list_todo:
-		file.write("%d, %s, %d, %s\n" % (todo[0], todo[1]["name"], todo[1]["status"], todo[1]["reason"]) )
+		file.write("%d, %s, %d, %s\n" % (todo[0], todo[1]["name"], todo[1]["status"], todo[1]["reason"].replace(",", "%2C")) )
 	
 	file.close()
 

@@ -11,6 +11,20 @@ from python.stock import *
 dic_visit = {}
 dic_alert = {}
 
+def parseUTF8(res, length):
+    dic = {}
+
+    utf8 = res.rfile.read(length).decode("utf-8")
+    utf8_treat = utf8.replace("+", " ")
+
+    list_input = utf8_treat.split("&")
+    for input in list_input:
+        key = urllib.parse.unquote(input.split("=")[0])
+        value = urllib.parse.unquote(input.split("=")[1])
+        dic[key] = value
+
+    return dic 
+
 def check(res, list_account):
 	access = False
 	if checkAccount(res, list_account):
@@ -24,15 +38,15 @@ def check(res, list_account):
 		dic_alert[ip_client] = True
 
 def home_input(res):
-	ip_client = res.client_address[0]
-	if checkVisit(dic_visit, ip_client) is False:
-		return 
+    ip_client = res.client_address[0]
+    if checkVisit(dic_visit, ip_client) is False:
+        return 
 
-	length = int(res.headers['Content-length'])
-	raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
-
-	memo = parseHomeInput(raw_input.replace("+", " ")) 
-	saveMemo(memo)
+    length = int(res.headers['Content-length'])
+    dic_input = parseUTF8(res, length)
+    
+    memo = parseHomeInput(dic_input) 
+    saveMemo(memo)
 
 def schedule_input(res):
     ip_client = res.client_address[0]
@@ -40,12 +54,12 @@ def schedule_input(res):
         return ""
 
     length = int(res.headers['Content-length'])
-    raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
+    dic_input = parseUTF8(res, length) 
 
-    ym, day, content = parseScheduleInput(raw_input.replace("+", " ")) 
+    ym, day, content = parseScheduleInput(dic_input) 
     saveSchedule(ym, day, content)
     str = "?date=%4d-%02d-%02d" % ((ym / 100), ym % 100, day)
-
+    
     return str
 
 def todo_input(res):
@@ -54,9 +68,9 @@ def todo_input(res):
         return
 
     length = int(res.headers['Content-length'])
-    raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
+    dic_input = parseUTF8(res, length) 
 
-    dic_todo, date = parseTodoInput(raw_input.replace("+", " ")) 
+    dic_todo, date = parseTodoInput(dic_input) 
     list_todo = getTodoList(date)
     modifyTodoList(dic_todo, list_todo)
     saveTodoList(date, list_todo)
@@ -65,14 +79,13 @@ def todo_input(res):
 
     return str
 
-
 def stock_input(res):
     ip_client = res.client_address[0]
     if checkVisit(dic_visit, ip_client) is False:
         return
 
     length = int(res.headers['Content-length'])
-    raw_input = urllib.parse.unquote(res.rfile.read(length).decode("utf-8"))
+    dic_input = parseUTF8(res, length)
 
 def root(ip_client):
 	path = None

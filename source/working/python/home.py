@@ -36,8 +36,8 @@ def getFavorite():
 			str += '<div><a href="' + link + '" target="_blank"><img src="' + icon + '"/>&nbsp;<span>' + name + "</span></a></div>"
 	return str
 
-def parseHomeInput(raw_input):
-	memo = raw_input.split("=")[1]
+def parseHomeInput(dic_input):
+	memo = dic_input["home"]
 
 	return memo 
 
