@@ -96,6 +96,7 @@ def makeTodoHTML(date):
     file.write('<meta charset="utf-8">\n')
     file.write("<html>")
     file.write('<link rel="stylesheet" type="text/css" href="css/no_drag.css">\n')
+    file.write('<script src="js/logout.js"></script>\n')
     file.write('<body style="margin: 10px">\n')
     file.write('<div style="display: table; text-align: center; width: 100%;">\n')
     file.write('<form action="/todo" method="get" target="inner">\n')
