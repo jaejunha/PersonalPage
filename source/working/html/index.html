@@ -114,11 +114,37 @@
 			}
 			menu div {
 				margin: 10px;
+				margin-top: 5px;
+			}
+			profile {
+				position: absolute;
+				margin: 0;
+				padding: 0;
+				left: 0;
+				top: 0;
+				width: 200px;
+				height: 240px;
+			}
+			profile div{
+				margin: 10px;
+				padding-bottom: 10px;
+				text-align: center;
+				overflow: hidden;
+				background-color: rgba(255, 255, 255, 0.5);
+				moz-box-shadow: 0 2px 2px rgba(108, 108, 108, 0.7);
+				-webkit-box-shadow: 0 2px 2px rgba(108, 108, 108, 0.7);
+				box-shadow: 0 2px 2px rgba(108, 108, 108, 0.7);
+			}
+			profile img{
+				padding: 10px;
+				width: 160px;
+				height: 160px;
 			}
 			menu {
 				margin: 0;
 				padding: 0;
 				left: 0;
+				top: 230px;
 				width: 200px;
 			}
 			menu div {
@@ -209,6 +235,12 @@
 			</div>
 		</favorite>
 		<main>
+			<profile>
+				<div>
+				<img src="img/profile.gif"/>
+				<span>꿈★을 쫓는 몽상가</span>
+				</div>
+			</profile>
 			<menu>
 				<div>
 					<span><a onclick="unfold();">+ 메뉴</a></span>
