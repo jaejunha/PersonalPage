@@ -16,7 +16,8 @@ if __name__ == "__main__":
     
     for i in range(len_list):
         client.recv(1024)
-        client.send((PATH_TARGET + "/" + list_file[i]).encode())
+        size = os.path.getsize(PATH_TARGET + "/" + list_file[i])
+        client.send((PATH_TARGET + "/" + list_file[i] + "/" + str(size)).encode())
         client.recv(1024)
         file = open(PATH_TARGET + "/" + list_file[i], "rb")
         data = file.read(1024)

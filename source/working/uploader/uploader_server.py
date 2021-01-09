@@ -41,15 +41,22 @@ try:
         num = int(client.recv(1024).decode())
         for i in range(num):
             client.send("ok".encode())
-            name = client.recv(1024).decode().split("/")[-1]
-            print(name)
+            raw = client.recv(1024).decode().split("/")
+            size = int(raw[-1])
+            name = raw[-2]
+            print(name, size)
             file = open(name, "wb")
             client.send("ok".encode())
+
             data = client.recv(1024)
-            while data != "ok".encode():
+            size -= len(data)
+            while size > 0:
                 file.write(data)
                 data = client.recv(1024)
+                size -= len(data)
+            file.write(data)
             file.close()
+
             print("ok")
         client.close()
 except KeyboardInterrupt:
