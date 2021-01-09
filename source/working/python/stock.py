@@ -3,25 +3,35 @@ import datetime
 CONST_SAT = 5
 
 def avoidWeekend(date, delta):
-    if delta == -1:
+    if delta == 0:
+        week = date
+        while week.weekday() >= CONST_SAT:
+            week -= datetime.timedelta(days = 1)
+
+    elif delta == -1:
         week = date
         week -= datetime.timedelta(days = 1)
         while week.weekday() >= CONST_SAT:
             week -= datetime.timedelta(days = 1)
 
     elif delta == 1:
-        if datetime.datetime.now() < date + datetime.timedelta(days = 1):
+        if date.weekday() >= CONST_SAT - 1:
+            date += datetime.timedelta(days = (7 - date.weekday()))
+        else:
+            date += datetime.timedelta(days = 1)
+
+
+        if datetime.datetime.now().day < date.day:
             week = datetime.datetime.now()
         else:
-            week = date + datetime.timedelta(days = 1)
+            week = date
 
-        while week.weekday() >= CONST_SAT:
-            week -= datetime.timedelta(days = 1)
+        week = avoidWeekend(week, 0)
 
     return week
 
 def makeStockHTML(date):
-
+    date = avoidWeekend(date, 0)
     file = open("html/stock.html", "w")
     file.write('<meta charset="utf-8">\n')
     file.write("<html>")
