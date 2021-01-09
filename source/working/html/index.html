@@ -138,6 +138,10 @@
 				color: #fff;
 				text-decoration: none;
 			}
+			menu div hr {
+				border-top: 1px dashed #aaa;
+				border-bottom: 0px dashed #aaa;
+			}
 			inner {
 				left: 200px;
 				width: calc(100% - 400px);
@@ -170,8 +174,22 @@
 			function loadHTML(html){
 				$("inner iframe").attr("src", html);
 			}
+			function unfold(){
+				var menu_link = $("menu span:nth-child(1) a");
+				console.log(menu_link.text());
+				var menu_div = $("menu div div");
+				if (menu_link.text() == "+ 메뉴"){
+					menu_link.text("- 메뉴");
+					menu_div.css("display", "block");
+				}
+				else{
+					menu_link.text("+ 메뉴");
+					menu_div.css("display", "none");
+				}
+			}
 			$(document).ready(function() {
 				// 초기 로드
+				$("menu div div").css("display", "none");
 				$("inner iframe").attr("src", "home");
 			});
 		</script>
@@ -193,10 +211,13 @@
 		<main>
 			<menu>
 				<div>
-					<span>메뉴</span>
+					<span><a onclick="unfold();">+ 메뉴</a></span>
+					<div>
 					<hr>
 					:)menu.csv&
-				</div>
+					<hr>
+					</div>
+				</div>	
 			</menu>
 			<inner>
 				<iframe name="inner"></iframe>
