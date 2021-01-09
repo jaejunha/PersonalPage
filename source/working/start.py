@@ -44,8 +44,8 @@ class HandlerHTTP(BaseHTTPRequestHandler):
             para = todo_input(self)
             self._redirect("/todo" + para)
         elif self.path == "/stock":
-            stock_input(self)
-            self._redirect("/stock")
+            para = stock_input(self)
+            self._redirect("/stock" + para)
 
     def do_GET(self):
         print(self.path)

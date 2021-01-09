@@ -3,7 +3,7 @@ from python.home import *
 CONST_8KB = 8192 
 
 def checkObject(path):
-    return (".png" in path) or (".jpg" in path) or (".gif" in path) or (".ico" in path) or (".css" in path) or (".js" in path) or (".ttf" in path)
+    return (".png" in path) or (".jpg" in path) or (".jpeg" in path) or (".gif" in path) or (".ico" in path) or (".css" in path) or (".js" in path) or (".ttf" in path)
 
 def writeObject(res):
 	file = open(res.path, "rb")

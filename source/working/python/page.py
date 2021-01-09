@@ -11,10 +11,40 @@ from python.stock import *
 dic_visit = {}
 dic_alert = {}
 
+def parseRaw(res, length):
+    dic = {}
+
+    raw = res.rfile.read(length)
+    boundary = "------WebKitFormBoundary".encode()
+    if boundary in raw:
+        list_raw = raw.split("\r\n\r\n".encode())
+        type = list_raw[0].decode().split("/")[1].strip()
+        name = list_raw[2].decode().split("\n")[0].strip()
+        data = list_raw[1][:list_raw[1].find(boundary)]
+        file = open("%s.%s" % (name, type), "wb")
+        file.write(data)
+
+        list_date = name.split("-")
+        date = datetime.date(int(list_date[0]), int(list_date[1]), int(list_date[2]))
+
+        return date, True
+
+    else:
+        utf8 = raw.decode("utf-8")
+        utf8_treat = utf8.replace("+", " ")
+
+        list_input = utf8_treat.split("&")
+        for input in list_input:
+            key = urllib.parse.unquote(input.split("=")[0])
+            value = urllib.parse.unquote(input.split("=")[1])
+            dic[key] = value
+
+        return dic, False
+
 def parseUTF8(res, length):
     dic = {}
 
-    utf8 = res.rfile.read(length).decode("utf-8")
+    utf8 = raw.decode("utf-8")
     utf8_treat = utf8.replace("+", " ")
 
     list_input = utf8_treat.split("&")
@@ -85,7 +115,11 @@ def stock_input(res):
         return
 
     length = int(res.headers['Content-length'])
-    dic_input = parseUTF8(res, length)
+    ret, is_file = parseRaw(res, length)
+    if is_file:
+        return ret.strftime("?date=%Y-%m-%d")
+    else:
+        pass
 
 def root(ip_client):
 	path = None

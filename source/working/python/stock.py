@@ -50,6 +50,7 @@ def makeStockHTML(date):
     file.write("</div>\n")
     file.write('<form method="post" action="stock" enctype="multipart/form-data">\n')
     file.write('<input type="file" name="test" accept="image/*">\n')
+    file.write('<input type="hidden" name="date" value="%s">\n' % date.strftime("%Y-%m-%d"))
     file.write('<input type="submit">\n')
     file.write("</form>\n")
     file.write("</body>\n")
