@@ -44,7 +44,7 @@ def parseRaw(res, length):
 def parseUTF8(res, length):
     dic = {}
 
-    utf8 = raw.decode("utf-8")
+    utf8 = res.rfile.read(length).decode("utf-8")
     utf8_treat = utf8.replace("+", " ")
 
     list_input = utf8_treat.split("&")
