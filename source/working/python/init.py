@@ -1,3 +1,5 @@
+import os
+
 def getPort():
 	port = None
 	try:
@@ -7,3 +9,6 @@ def getPort():
 		port = 80
 
 	return port
+
+def removeNohup():
+    os.remove("nohup.out")

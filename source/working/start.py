@@ -95,6 +95,8 @@ if __name__ == "__main__":
     if getAccount(list_account) is False:
         sys.exit(1)
 
+    removeNohup()
+
     server_http = HTTPServer(("", port), HandlerHTTP)
     server_http.socket = ssl.wrap_socket(server_http.socket, server_side = True, certfile = "server.pem", ssl_version = ssl.PROTOCOL_TLS)
     server_http.serve_forever()
