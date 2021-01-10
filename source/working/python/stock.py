@@ -95,8 +95,11 @@ def getRange():
     for file_name in os.listdir("output/stock/result"):
         file = open("output/stock/result/" + file_name, "r")
         list_data = file.readlines()[0].split(",")
-        list_loss.append( int( list_data[0].strip() ) )
-        list_gain.append( int( list_data[1].strip() ) )
+        loss = int( list_data[0].strip() )
+        gain = int( list_data[1].strip() )
+        if loss != 0 and gain != 0:
+            list_loss.append( loss )
+            list_gain.append( gain )
 
     avg_loss = np.mean(list_loss)
     std_loss = np.std(list_loss)
@@ -104,7 +107,10 @@ def getRange():
     avg_gain = np.mean(list_gain)
     std_gain = np.std(list_gain)
 
-    str_loss = "%s ~ %s" % (format(int(avg_loss - 2 * std_loss), ","), format(int(avg_loss + 2 * std_loss), ","))
+    min_loss = avg_loss + 2 * std_loss
+    if min_loss < 0:
+        min_loss = 0
+    str_loss = "%s ~ %s" % (format(int(avg_loss - 2 * std_loss), ","), format(min_loss, ","))
     str_gain = "%s ~ %s" % (format(int(avg_gain - 2 * std_gain), ","), format(int(avg_gain + 2 * std_gain), ","))
 
     return str_loss, str_gain
