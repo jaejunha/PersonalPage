@@ -10,7 +10,7 @@ def getMenu():
                 str += "<hr>"
             else:
                 link = list_line[1].strip()
-                str += "<div><span><a onclick='loadHTML(%d, " % idx + '"' + link + '");' + "'>" + name + "</a></span></div>"
+                str += '<div><span><a style="width: 100%%; display: inline-block;" onclick="loadHTML(%d, ' % idx + '\'' + link + '\');">' + name + "</a></span></div>"
                 idx += 1
 
     return str[:-4]
