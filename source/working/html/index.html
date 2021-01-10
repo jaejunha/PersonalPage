@@ -176,11 +176,17 @@
 			menu div hr {
 				border-top: 1px dashed #fff;
 				border-bottom: 0px dashed #aaa;
+				margin-top: 4px;
+				margin-bottom: 4px;
 			}
 			menu div div {
 				margin: 0;
 				padding: 0;
 				background: rgba(0, 0, 0, 0);
+			}
+			menu div div div{
+				padding-top: 2px;
+				padding-bottom: 3px;
 			}
 			inner {
 				left: 200px;
@@ -214,7 +220,7 @@
 			var is_unfold = false;
 			function loadHTML(idx, html){
 				$("menu div div:nth-child(n+2)").css("background", "rgba(0, 0, 0, 0)");
-				$("menu div div div:nth-of-type(" + idx + ")").css("background", "rgba(0, 0, 0, 0.5)");
+				$("menu div div div:nth-of-type(" + idx + ")").css("background", "rgba(0, 0, 0, 0.3)");
 				$("inner iframe").attr("src", html);
 			}
 			function unfold(){
@@ -236,6 +242,8 @@
 				$("menu div div").css("display", "none");
 				$("menu div div:nth-child(1)").css("display", "block");
 				$("inner iframe").attr("src", "home");
+				$("menu div div div:nth-of-type(1)").css("background", "rgba(0, 0, 0, 0.3)");
+
 			});
 		</script>
 	</head>

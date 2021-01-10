@@ -7,7 +7,7 @@ def getMenu():
             list_line = line.split(",")
             name = list_line[0].strip()
             if name == "---":
-                str += '<hr style="margin-top: 4px; margin-bottom: 4px;">'
+                str += "<hr>"
             else:
                 link = list_line[1].strip()
                 str += "<div><span><a onclick='loadHTML(%d, " % idx + '"' + link + '");' + "'>" + name + "</a></span></div>"
