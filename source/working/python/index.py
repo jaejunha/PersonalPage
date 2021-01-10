@@ -1,6 +1,7 @@
 def getMenu():
     str = ""
     file = open("config/menu.csv", "r")
+    idx = 1 
     for line in file.readlines():
         if len(line) > 0:
             list_line = line.split(",")
@@ -9,7 +10,8 @@ def getMenu():
                 str += '<hr style="margin-top: 4px; margin-bottom: 4px;">'
             else:
                 link = list_line[1].strip()
-                str += "<span><a onclick='loadHTML(" + '"' + link + '");' + "'>" + name + "</a></span><br>"
+                str += "<div><span><a onclick='loadHTML(%d, " % idx + '"' + link + '");' + "'>" + name + "</a></span></div>"
+                idx += 1
 
     return str[:-4]
 

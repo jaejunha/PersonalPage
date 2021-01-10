@@ -156,7 +156,7 @@
 				top: 230px;
 				width: 200px;
 			}
-			menu div {
+			menu div:nth-child(1) {
 				background-color: rgba(0, 0, 0, 0.5);
 				padding: 5px;
 			}
@@ -177,7 +177,7 @@
 				border-top: 1px dashed #fff;
 				border-bottom: 0px dashed #aaa;
 			}
-			menu div div{
+			menu div div {
 				margin: 0;
 				padding: 0;
 				background: rgba(0, 0, 0, 0);
@@ -211,25 +211,30 @@
 			}
 		</style>
 		<script>
-			function loadHTML(html){
+			var is_unfold = false;
+			function loadHTML(idx, html){
+				$("menu div div:nth-child(n+2)").css("background", "rgba(0, 0, 0, 0)");
+				$("menu div div div:nth-of-type(" + idx + ")").css("background", "rgba(0, 0, 0, 0.5)");
 				$("inner iframe").attr("src", html);
 			}
 			function unfold(){
-				var menu_link = $("menu span:nth-child(1) a");
-				console.log(menu_link.text());
-				var menu_div = $("menu div div");
-				if (menu_link.text() == "+ 메뉴"){
-					menu_link.text("- 메뉴");
+				var menu_div = $("menu div div:nth-child(n+2)");
+				var menu_text = $("menu div div:nth-child(1) a");
+				if (is_unfold == false){
+					is_unfold = true;
+					menu_text.text("- 메뉴");
 					menu_div.css("display", "block");
 				}
 				else{
-					menu_link.text("+ 메뉴");
+					is_unfold = false;
+					menu_text.text("+ 메뉴");
 					menu_div.css("display", "none");
 				}
 			}
 			$(document).ready(function() {
 				// 초기 로드
 				$("menu div div").css("display", "none");
+				$("menu div div:nth-child(1)").css("display", "block");
 				$("inner iframe").attr("src", "home");
 			});
 		</script>
@@ -257,7 +262,9 @@
 			</profile>
 			<menu>
 				<div>
-					<span><a onclick="unfold();">+ 메뉴</a></span>
+					<div>
+						<span><a onclick="unfold();">+ 메뉴</a></span>
+					</div>
 					<div>
 					<hr>
 					:)menu.csv&
