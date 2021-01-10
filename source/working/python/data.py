@@ -1,4 +1,4 @@
-from python.home import *
+from python.index import *
 
 CONST_8KB = 8192 
 
