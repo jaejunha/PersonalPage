@@ -122,7 +122,7 @@ def stock_input(res):
     if is_file:
         return ret.strftime("?date=%Y-%m-%d")
     else:
-        pass
+        return "?date=" + saveStockDic(ret)
 
 def root(ip_client):
 	path = None
