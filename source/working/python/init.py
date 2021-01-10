@@ -11,4 +11,7 @@ def getPort():
 	return port
 
 def removeNohup():
-    os.remove("nohup.out")
+    try:
+        os.remove("nohup.out")
+    except FileNotFoundError:
+        pass
