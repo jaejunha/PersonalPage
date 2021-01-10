@@ -1,6 +1,7 @@
 # coding: utf8
 
 import urllib
+import os
 
 from python.account import *
 from python.home import *
@@ -11,7 +12,7 @@ from python.stock import *
 dic_visit = {}
 dic_alert = {}
 
-def parseRaw(res, length):
+def saveFile(res, length):
     dic = {}
 
     raw = res.rfile.read(length)
@@ -21,7 +22,8 @@ def parseRaw(res, length):
         type = list_raw[0].decode().split("/")[1].strip()
         name = list_raw[2].decode().split("\n")[0].strip()
         data = list_raw[1][:list_raw[1].find(boundary)]
-        file = open("%s.%s" % (name, type), "wb")
+        os.system("rm output/stock/screenshot/%s*" % name)
+        file = open("output/stock/screenshot/%s.%s" % (name, type), "wb")
         file.write(data)
 
         list_date = name.split("-")
@@ -115,7 +117,7 @@ def stock_input(res):
         return
 
     length = int(res.headers['Content-length'])
-    ret, is_file = parseRaw(res, length)
+    ret, is_file = saveFile(res, length)
     if is_file:
         return ret.strftime("?date=%Y-%m-%d")
     else:

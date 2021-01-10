@@ -1,4 +1,5 @@
 import datetime
+import os
 
 CONST_SAT = 5
 
@@ -30,6 +31,17 @@ def avoidWeekend(date, delta):
 
     return week
 
+def loadScreenshot(date):
+    path = "output/stock/screenshot/"
+
+    str_date = date.strftime("%Y-%m-%d")
+    for file in os.listdir("output/stock/screenshot"):
+        if file.startswith(str_date):
+            path += file
+            break
+
+    return path
+
 def makeStockHTML(date):
     date = avoidWeekend(date, 0)
     file = open("html/stock.html", "w")
@@ -48,7 +60,10 @@ def makeStockHTML(date):
     file.write('<button style="display: table-cell; width:0; height:0; border-style:solid; border-width:20px;border-color:transparent transparent transparent #555; background-color: rgba(0, 0, 0, 0); cursor: pointer;"></button>\n')
     file.write("</form>\n")
     file.write("</div>\n")
-    file.write('<form method="post" action="stock" enctype="multipart/form-data">\n')
+    file.write('<div style="height: calc(70% - 85px);">\n')
+    file.write('<img style="width: 100%%; height: 100%%; object-fit: contain;" src="%s"/>\n' % loadScreenshot(date))
+    file.write("</div>\n")
+    file.write('<form method="post" action="stock" style="text-align: center;" enctype="multipart/form-data">\n')
     file.write('<input type="file" name="test" accept="image/*">\n')
     file.write('<input type="hidden" name="date" value="%s">\n' % date.strftime("%Y-%m-%d"))
     file.write('<input type="submit">\n')
