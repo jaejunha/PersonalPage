@@ -1,5 +1,6 @@
 import datetime
 import os
+import numpy as np
 
 CONST_SAT = 5
 
@@ -88,6 +89,27 @@ def getResult(date):
 
     return dic
 
+def getRange():
+    list_loss = []
+    list_gain = []
+    for file_name in os.listdir("output/stock/result"):
+        file = open("output/stock/result/" + file_name, "r")
+        list_data = file.readlines()[0].split(",")
+        list_loss.append( int( list_data[0].strip() ) )
+        list_gain.append( int( list_data[1].strip() ) )
+
+    avg_loss = np.mean(list_loss)
+    std_loss = np.std(list_loss)
+
+    avg_gain = np.mean(list_gain)
+    std_gain = np.std(list_gain)
+
+    str_loss = "%s ~ %s" % (format(int(avg_loss - 2 * std_loss), ","), format(int(avg_loss + 2 * std_loss), ","))
+    str_gain = "%s ~ %s" % (format(int(avg_gain - 2 * std_gain), ","), format(int(avg_gain + 2 * std_gain), ","))
+
+    return str_loss, str_gain
+
+
 def makeStockHTML(date):
     
     date = avoidWeekend(date, 0)
@@ -109,7 +131,7 @@ def makeStockHTML(date):
     file.write('<button style="display: table-cell; width:0; height:0; border-style:solid; border-width:20px;border-color:transparent transparent transparent #555; background-color: rgba(0, 0, 0, 0); cursor: pointer;"></button>\n')
     file.write("</form>\n")
     file.write("</div>\n")
-    file.write('<div style="height: calc(60% - 80px);">\n')
+    file.write('<div style="height: calc(55% - 80px);">\n')
     file.write('<img style="width: 100%%; height: 100%%; object-fit: contain;" src="%s"/>\n' % loadScreenshot(str_date))
     file.write("</div>\n")
     file.write('<form method="post" action="stock" style="text-align: center; margin-top: 5px;" enctype="multipart/form-data">\n')
@@ -118,15 +140,16 @@ def makeStockHTML(date):
     file.write('<input type="submit">\n')
     file.write("</form>\n")
     dic_res = getResult(str_date)
-    file.write('<form action="/stock" method="post" target="inner" style="width: 100%; height: calc(40% - 80px);">\n')
-    file.write('<div style="width: 100%; height: 100%; border: 1px solid #bcbcbc; background-color: rgba(255, 255, 255, 0.6); border-radius: 2px;">\n')
+    file.write('<form action="/stock" method="post" target="inner" style="width: 100%; height: calc(45% - 80px);">\n')
+    file.write('<div style="width: calc(100% - 10px); height: 100%; border: 1px solid #bcbcbc; background-color: rgba(255, 255, 255, 0.6); border-radius: 2px; padding: 5px;">\n')
     if dic_res["total"] != 0:
         file.write('<span style="display: inline-block; width: 100px;">하루 수익</span><span>%s (%.2f%%)</span><br>\n' % (format(dic_res["total"], ","), (dic_res["total"] / dic_res["available"] * 100.0)))
         file.write('<span style="display: inline-block; width: 100px;">하루 순손익</span><span>%s (%.2f%%)</span><br>\n' % (format(dic_res["gain"], ","), (dic_res["gain"] / dic_res["available"] * 100.0)))
     else:
-        file.write('<span style="display: inline-block;">하루 수익</span><br>\n')
-        file.write('<span style="display: inline-block;">하루 순손익</span><br>\n')
-    file.write("<hr>\n")
+        loss, gain = getRange()
+        file.write('<span style="display: inline-block; width: 100px;">기대 손절</span>%s<br>\n' % loss)
+        file.write('<span style="display: inline-block; width: 100px;">기대 손익</span>%s<br>\n' % gain)
+    file.write('<hr style="border-top: 1px dashed #bcbcbc; border-bottom: 0px dashed #bcbcbc;">\n')
     file.write("<div>\n")
     file.write('<span style="display: inline-block; width: 100px;">손절</span>\n')
     file.write('<input style="width: 100px; text-align: right;" name="loss" type="text" value="%s">\n' % format(dic_res["loss"], ","))
