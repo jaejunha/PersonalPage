@@ -29,7 +29,7 @@ def modifyTodoList(dic_todo, list_todo):
 
 def getTodoList(date):
     list_todo = []
-    file_name = date.strftime("todo/data/%Y-%m-%d.csv")
+    file_name = date.strftime("output/todo/data/%Y-%m-%d.csv")
 	
     try:
         file = open(file_name, "r")
@@ -53,7 +53,7 @@ def getTodoList(date):
         """
         week = CONST_WEEK[date.weekday()]
 
-        file = open("todo/frame/frame.csv", "r")
+        file = open("output/todo/frame/frame.csv", "r")
         for line in file.readlines():
             if line.strip() == "":
                 continue
@@ -76,7 +76,7 @@ def getTodoList(date):
     return list_todo
 
 def saveTodoList(date, list_todo):
-	file_name = date.strftime("todo/data/%Y-%m-%d.csv")
+	file_name = date.strftime("output/todo/data/%Y-%m-%d.csv")
 
 	file = open(file_name, "w")
 	for todo in list_todo:

@@ -18,8 +18,7 @@ img/meditation.png
 img/background_*
 img/bird.png
 
-todo/*
-schedule/*
+output/*
 
 html/home.html
 html/todo.html

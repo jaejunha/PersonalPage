@@ -18,7 +18,7 @@ def loadSchedule(ym, last):
     dic = {}
     str = ""
 
-    folder_name = "schedule/%d" % ym
+    folder_name = "output/schedule/%d" % ym
     if os.path.isdir(folder_name):
         for file_name in os.listdir(folder_name):
             content = ""
@@ -46,7 +46,7 @@ def saveSchedule(ym, day, content):
         
         folder_name = str(ym)
 
-        os.chdir("schedule")
+        os.chdir("output/schedule")
         if os.path.isdir(folder_name) is False:
             os.system("mkdir %s" % folder_name)
 
@@ -55,7 +55,7 @@ def saveSchedule(ym, day, content):
         file.write(content)
         file.close()
 
-        os.chdir("../")
+        os.chdir("../../")
 
 def getOptionTD(height, year, month, day, row, col):
     str_style = 'style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap; padding: 5px; height: %f%%; vertical-align: top; background-color: rgba(255, 255, 255, 0.6); cursor: pointer; ' % height
