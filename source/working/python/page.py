@@ -5,6 +5,7 @@ import os
 
 from python.account import *
 from python.home import *
+from python.bucketlist import *
 from python.schedule import *
 from python.todo import *
 from python.stock import *
@@ -148,8 +149,6 @@ def home(ip_client):
 
 	return path, access
 
-
-
 def logout(ip_client):
 	access = True
 
@@ -157,6 +156,17 @@ def logout(ip_client):
 		del dic_visit[ip_client]
 			
 	path = "html/login_normal.html"
+
+	return path, access
+
+def bucketlist(ip_client):
+	if checkVisit(dic_visit, ip_client):
+		access = True
+		makeBucketHTML()
+	else:
+		access = False
+		
+	path = "html/bucketlist.html"
 
 	return path, access
 

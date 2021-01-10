@@ -21,6 +21,7 @@ img/bird.png
 output/*
 
 html/home.html
+html/bucketlist.html
 html/todo.html
 html/stock.html
 html/schedule.html
