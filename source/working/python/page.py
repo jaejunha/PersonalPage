@@ -23,9 +23,10 @@ def saveFile(res, length):
         type = list_raw[0].decode().split("/")[1].strip()
         name = list_raw[2].decode().split("\n")[0].strip()
         data = list_raw[1][:list_raw[1].find(boundary)]
-        os.system("rm output/stock/screenshot/%s*" % name)
-        file = open("output/stock/screenshot/%s.%s" % (name, type), "wb")
-        file.write(data)
+        if type.endswith("jpeg") or type.endswith("jpg") or type.endswith("png") or type.endswith("gif") or type.endswith("bmp"): 
+            os.system("rm output/stock/screenshot/%s*" % name)
+            file = open("output/stock/screenshot/%s.%s" % (name, type), "wb")
+            file.write(data)
 
         list_date = name.split("-")
         date = datetime.date(int(list_date[0]), int(list_date[1]), int(list_date[2]))

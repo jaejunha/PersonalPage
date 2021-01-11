@@ -107,7 +107,7 @@ def getRange():
     avg_gain = np.mean(list_gain)
     std_gain = np.std(list_gain)
 
-    min_loss = avg_loss + 2 * std_loss
+    min_loss = int(avg_loss + 2 * std_loss)
     if min_loss < 0:
         min_loss = 0
     str_loss = "%s ~ %s" % (format(int(avg_loss - 2 * std_loss), ","), format(min_loss, ","))
